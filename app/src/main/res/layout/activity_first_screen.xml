@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center|bottom"
-        android:textSize="32sp"
+        android:textSize="@dimen/enter_monthly_budget"
         android:text="@string/enter_monthly_budget" />
 
 

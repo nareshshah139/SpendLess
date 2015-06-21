@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 public class ChangeBudgetScreen extends Activity implements View.OnClickListener {
 
-
     private double tempChangeMonthlyBudget;
 
     EditText changeMonthlyBudgetET;
