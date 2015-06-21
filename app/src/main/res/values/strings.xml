@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">SpendLess</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+
+    // MainActivity
+    <string name="change_budget">Change Budget</string>
+    <string name="sample_amount_left">$0.00</string>
+    <string name="enter_amount_spent">enter amount spent</string>
+    <string name="submit_amount_spent_button">Submit</string>
+    <string name="title_activity_first_screen">FirstScreen</string>
+
+
+
+    // FirstScreen
+    <string name="enter_monthly_budget">Enter monthly budget</string>
+    <string name="example_budget">ex. 2500.00</string>
+    <string name="submit_monthly_budget">Submit</string>
+    <string name="title_activity_change_budget_screen">ChangeBudgetScreen</string>
+
+
+    // ChangeBudgetScreen
+    <string name="change_monthly_budget_TextView">Change monthly budget</string>
+    <string name="change_monthly_budget_hint_EditText">enter new monthly budget</string>
+    <string name="submit_monthly_change_button">Submit</string>
+    <string name="back_to_main_button">Back</string>
+</resources>
