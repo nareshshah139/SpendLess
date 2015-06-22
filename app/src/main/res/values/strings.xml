@@ -24,7 +24,10 @@
 
     <!-- ChangeBudgetScreen -->
     <string name="change_monthly_budget_TextView">Change monthly budget</string>
-    <string name="change_monthly_budget_hint_EditText">enter new monthly budget</string>
+    <string name="change_monthly_budget_hint_EditText">enter new budget</string>
     <string name="submit_monthly_change_button">Submit</string>
     <string name="back_to_main_button">Back</string>
+
+    <string name="reset_budget_now">Reset budget now</string>
+    <string name="turn_auto_reset_OnOff">Auto reset</string>string>
 </resources>

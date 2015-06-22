@@ -14,44 +14,162 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/changeMonthlyBudgetTextView"
-        android:text="@string/change_monthly_budget_TextView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center|bottom"
-        android:textSize="32sp" />
+
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center|bottom"
+        android:layout_weight="1" >
+
+        <TextView
+            android:id="@+id/changeMonthlyBudgetTextView"
+            android:text="@string/change_monthly_budget_TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="32sp" />
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <EditText
+                android:id="@+id/changeMonthlyBudgetEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/change_monthly_budget_hint_EditText"
+                android:inputType="numberDecimal"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/submitMonthlyChangeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/submit_monthly_change_button"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_weight="2" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_weight="1" >
 
-        <EditText
-            android:id="@+id/changeMonthlyBudgetEditText"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/resetBudgetNow"
+            android:text="@string/reset_budget_now"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/change_monthly_budget_hint_EditText"
             android:gravity="center"
             android:layout_gravity="center"
-            android:layout_weight="1" />
+            android:textSize="32sp" />
 
-        <Button
-            android:id="@+id/submitMonthlyChangeButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/submit_monthly_change_button"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_weight="2" />
-
-
+            <Button
+                android:id="@+id/resetBudgetNowButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/submit_monthly_change_button"
+                android:gravity="center"
+                android:layout_gravity="center"
+                />
 
 
     </LinearLayout>
+
+
+
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1" >
+
+
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/turnAutoResetOnOff"
+                android:text="@string/turn_auto_reset_OnOff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center|left"
+                android:textSize="32sp" />
+
+            <Button
+                android:id="@+id/turnResetOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/submit_monthly_change_button"
+                />
+
+            <Button
+                android:id="@+id/turnResetOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/submit_monthly_change_button"
+                android:layout_gravity="center|right"
+                />
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </LinearLayout>
