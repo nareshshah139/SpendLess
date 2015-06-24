@@ -14,8 +14,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-
-
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -30,14 +28,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="32sp" />
+            android:textSize="@dimen/change_budget_screen_headline" />
 
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/changeMonthlyBudgetEditText"
@@ -62,13 +59,12 @@
 
     </LinearLayout>
 
-
-
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
+        android:gravity="center"
         android:layout_weight="1" >
 
         <TextView
@@ -78,22 +74,17 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
-            android:textSize="32sp" />
+            android:textSize="@dimen/change_budget_screen_headline" />
 
-            <Button
-                android:id="@+id/resetBudgetNowButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/submit_monthly_change_button"
-                android:gravity="center"
-                android:layout_gravity="center"
-                />
-
+        <Button
+            android:id="@+id/resetBudgetNowButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reset_button"
+            android:gravity="center"
+            android:layout_gravity="center" />
 
     </LinearLayout>
-
-
-
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -102,74 +93,25 @@
         android:orientation="vertical"
         android:layout_weight="1" >
 
+        <TextView
+            android:id="@+id/turnAutoResetOnOff"
+            android:text="@string/turn_auto_reset_OnOff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center|left"
+            android:textSize="@dimen/change_budget_screen_headline" />
 
-
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <ToggleButton
+            android:id="@+id/toggleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-
-            android:layout_gravity="center">
-
-            <TextView
-                android:id="@+id/turnAutoResetOnOff"
-                android:text="@string/turn_auto_reset_OnOff"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center|left"
-                android:textSize="32sp" />
-
-            <Button
-                android:id="@+id/turnResetOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/submit_monthly_change_button"
-                />
-
-            <Button
-                android:id="@+id/turnResetOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/submit_monthly_change_button"
-                android:layout_gravity="center|right"
-                />
-
-
-
-        </LinearLayout>
+            android:textOn="@string/toggle_on"
+            android:textOff="@string/toggle_off"
+            android:checked="true"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </LinearLayout>

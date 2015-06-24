@@ -29,5 +29,9 @@
     <string name="back_to_main_button">Back</string>
 
     <string name="reset_budget_now">Reset budget now</string>
-    <string name="turn_auto_reset_OnOff">Auto reset</string>string>
+    <string name="reset_button">Reset</string>
+    <string name="turn_auto_reset_OnOff">Auto reset 1st of month</string>string>
+
+    <string name="toggle_on">On</string>
+    <string name="toggle_off">Off</string>
 </resources>

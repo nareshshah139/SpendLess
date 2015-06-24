@@ -27,11 +27,16 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor prefEditor;
 
+    private String tempTotalMonthlyBudget;
+
     String toastChangeBudget;
     Toast budgetChangedToast;
 
     Toast incorrectFormatToast;
     String formatToastMessage;
+
+    String resetBudgetMessage;
+    Toast budgetResetToast;
 
 
     @Override
@@ -53,12 +58,18 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
         Button submitMonthlyBudgetChangeButton = (Button) findViewById(R.id.submitMonthlyChangeButton);
         submitMonthlyBudgetChangeButton.setOnClickListener(this);
 
+        Button resetBudgetButton = (Button) findViewById(R.id.resetBudgetNowButton);
+        resetBudgetButton.setOnClickListener(this);
+
         // Toast Trial
         toastChangeBudget = "Budget will reset on the first of the next month.";
         budgetChangedToast = Toast.makeText(getApplicationContext(), toastChangeBudget, Toast.LENGTH_LONG);
 
         formatToastMessage = "Dollar amount must be submitted in correct format. Example: 100.00";
         incorrectFormatToast = Toast.makeText(getApplicationContext(), formatToastMessage, Toast.LENGTH_LONG);
+
+        resetBudgetMessage = "Reset dollars left to budget.";
+        budgetResetToast = Toast.makeText(getApplicationContext(), resetBudgetMessage, Toast.LENGTH_SHORT);
 
         tempChangeMonthlyBudget = 0.0;
     }
@@ -95,6 +106,18 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
                 startActivity(startMainActivityIntent);
 
             }
+        } else if (v.getId() == R.id.resetBudgetNowButton) {
+
+            // reset total dollars left to equal total monthly
+            // tempTotalMonthlyBudget = Double.parseDouble(sharedPreferences.getString("totalMonthlyBudget", "0.0"));
+            // prefEditor.putString("totalDollarsLeft", Double.toString(tempTotalMonthlyBudget));
+
+            tempTotalMonthlyBudget = sharedPreferences.getString("totalMonthlyBudget", "0.0");
+            prefEditor.putString("totalDollarsLeft", tempTotalMonthlyBudget);
+
+            prefEditor.commit();
+
+            budgetResetToast.show();
         }
 
     }
