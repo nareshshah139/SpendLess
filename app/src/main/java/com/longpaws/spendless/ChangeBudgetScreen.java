@@ -12,11 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 
-public class ChangeBudgetScreen extends Activity implements View.OnClickListener {
+public class ChangeBudgetScreen extends Activity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
 
     private double tempChangeMonthlyBudget;
 
@@ -37,6 +39,14 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
 
     String resetBudgetMessage;
     Toast budgetResetToast;
+
+    String autoResetOnMessage;
+    Toast autoResetTurnedOnToast;
+
+    String autoResetOffMessage;
+    Toast autoResetTurnedOffToast;
+
+    ToggleButton toggleButton;
 
 
     @Override
@@ -61,6 +71,9 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
         Button resetBudgetButton = (Button) findViewById(R.id.resetBudgetNowButton);
         resetBudgetButton.setOnClickListener(this);
 
+        toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
+        toggleButton.setOnCheckedChangeListener(this);
+
         // Toast Trial
         toastChangeBudget = "Budget will reset on the first of the next month.";
         budgetChangedToast = Toast.makeText(getApplicationContext(), toastChangeBudget, Toast.LENGTH_LONG);
@@ -70,6 +83,12 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
 
         resetBudgetMessage = "Reset dollars left to budget.";
         budgetResetToast = Toast.makeText(getApplicationContext(), resetBudgetMessage, Toast.LENGTH_SHORT);
+
+        autoResetOnMessage = "Budget will reset every month";
+        autoResetTurnedOnToast = Toast.makeText(getApplicationContext(), autoResetOnMessage, Toast.LENGTH_SHORT);
+
+        autoResetOffMessage = "Budget will not reset every month";
+        autoResetTurnedOffToast = Toast.makeText(getApplicationContext(), autoResetOffMessage, Toast.LENGTH_SHORT);
 
         tempChangeMonthlyBudget = 0.0;
     }
@@ -118,6 +137,26 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
             prefEditor.commit();
 
             budgetResetToast.show();
+        }
+
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+        if (isChecked)
+        {
+            prefEditor.putBoolean("AutoResetChecked", true);
+            prefEditor.commit();
+
+            autoResetTurnedOnToast.show();
+        }
+        else
+        {
+            prefEditor.putBoolean("AutoResetChecked", false);
+            prefEditor.commit();
+
+            autoResetTurnedOffToast.show();
         }
 
     }

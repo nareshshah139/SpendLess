@@ -99,9 +99,13 @@ public class FirstScreen extends Activity implements View.OnClickListener {
                 prefEditor.putInt("Year", startYear);
                 prefEditor.putInt("Month", startMonth);
 
+                // turn on auto reset every month by default when application launches initially
+                prefEditor.putBoolean("AutoResetChecked", true);
+
                 prefEditor.commit();
 
                 startActivity(startMainActivityIntent);
+                finish();
 
             }
         }

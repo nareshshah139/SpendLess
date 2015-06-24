@@ -56,6 +56,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     Toast incorrectFormatToast;
     String formatToastMessage;
 
+    boolean isAutoResetChecked;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,26 +93,31 @@ public class MainActivity extends Activity implements View.OnClickListener {
         previousYear = sharedPreferences.getInt("Year", 0);
         previousMonth = sharedPreferences.getInt("Month", 0);
 
-        if ( (currentYear > previousYear) || (currentMonth > previousMonth)) {
+        isAutoResetChecked = sharedPreferences.getBoolean("AutoResetChecked", true);
 
-            if (currentYear > previousYear) { // next year. reset both month and year.
+        if (isAutoResetChecked) {
 
-                prefEditor.putInt("Year", currentYear);
-                prefEditor.putInt("Month", currentMonth);
+            if ((currentYear > previousYear) || (currentMonth > previousMonth)) {
 
-                tempTotalMonthlyBudget = Double.parseDouble(sharedPreferences.getString("totalMonthlyBudget", "0.0"));
-                prefEditor.putString("totalDollarsLeft", Double.toString(tempTotalMonthlyBudget));
+                if (currentYear > previousYear) { // next year. reset both month and year.
 
-                prefEditor.commit();
+                    prefEditor.putInt("Year", currentYear);
+                    prefEditor.putInt("Month", currentMonth);
 
-            } else { // next month, but same year.
+                    tempTotalMonthlyBudget = Double.parseDouble(sharedPreferences.getString("totalMonthlyBudget", "0.0"));
+                    prefEditor.putString("totalDollarsLeft", Double.toString(tempTotalMonthlyBudget));
 
-                prefEditor.putInt("Month", currentMonth);
+                    prefEditor.commit();
 
-                tempTotalMonthlyBudget = Double.parseDouble(sharedPreferences.getString("totalMonthlyBudget", "0.0"));
-                prefEditor.putString("totalDollarsLeft", Double.toString(tempTotalMonthlyBudget));
+                } else { // next month, but same year.
 
-                prefEditor.commit();
+                    prefEditor.putInt("Month", currentMonth);
+
+                    tempTotalMonthlyBudget = Double.parseDouble(sharedPreferences.getString("totalMonthlyBudget", "0.0"));
+                    prefEditor.putString("totalDollarsLeft", Double.toString(tempTotalMonthlyBudget));
+
+                    prefEditor.commit();
+                }
             }
         }
 
