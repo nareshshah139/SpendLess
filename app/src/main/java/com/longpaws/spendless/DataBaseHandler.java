@@ -2,6 +2,7 @@ package com.longpaws.spendless;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -55,5 +56,37 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_NAME, null, values);
         db.close();
+    }
+
+    public String[] displayDataBase() {
+        String query = "SELECT * FROM " + TABLE_NAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        String[] data = new String[cursor.getCount()];
+
+        cursor.moveToFirst();
+        int index = 0;
+
+        while (!cursor.isAfterLast() ) {
+            String totalString;
+
+            String ID = "ID: " + cursor.getString(0) + "\n";
+            String MONTH = "Month: " + cursor.getString(1) + "\n";
+            String YEAR = "Year: " + cursor.getString(2) + "\n";
+            String DOLLAR_SPENT = "Amount: " + "$" + cursor.getString(3) + "\n\n";
+
+            totalString = ID + MONTH + YEAR + DOLLAR_SPENT;
+
+            data[index] = totalString;
+
+            cursor.moveToNext();
+            index++;
+        }
+
+        db.close();
+        cursor.close();
+        return data;
     }
 }

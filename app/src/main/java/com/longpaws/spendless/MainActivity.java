@@ -30,6 +30,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     Intent startFirstActivityIntent;
     Intent startChangeBudgetActivityIntent;
+    Intent startDataBaseActivityIntent;
 
     private double tempTotalMonthlyBudget;
     private int dayOfMonth;
@@ -37,8 +38,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private int currentMonth;
     private int previousYear;
     private int previousMonth;
+    private int dbMonth;
+    private int dbYear;
 
     Calendar cal;
+    Calendar dbCal;
 
     EditText enterAmountSpentET;
     TextView changeAmountLeftTV;
@@ -55,6 +59,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     Toast incorrectFormatToast;
     String formatToastMessage;
+
+    Toast submittedToDBToast;
+    String submittedToDB;
 
     boolean isAutoResetChecked;
 
@@ -136,10 +143,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
         Button changeMonthlyBudgetButton = (Button) findViewById(R.id.changeMonthlyBudgetButton);
         changeMonthlyBudgetButton.setOnClickListener(this);
 
+        Button goToDataBaseScreenButton = (Button) findViewById(R.id.goToHistory);
+        goToDataBaseScreenButton.setOnClickListener(this);
+
         startChangeBudgetActivityIntent = new Intent(this, ChangeBudgetScreen.class);
+        startDataBaseActivityIntent = new Intent(this, DataBaseScreen.class);
 
         formatToastMessage = "Dollar amount must be submitted in correct format. Example: 100.00";
         incorrectFormatToast = Toast.makeText(getApplicationContext(), formatToastMessage, Toast.LENGTH_LONG);
+
+        submittedToDB = "Submitted to DataBase";
+        submittedToDBToast = Toast.makeText(getApplicationContext(), submittedToDB, Toast.LENGTH_LONG);
     }
 
     public void onClick(View v) {
@@ -194,6 +208,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 incorrectFormatToast.show();
             }
 
+
+            double tempEnterAmountSpent = enterAmountSpentBigDecimal.doubleValue();
+
+            // put into data base if enterAmountSpent does not equal 0.0
+            if (tempEnterAmountSpent != 0.0) {
+
+                // put into database
+                newTransaction(tempEnterAmountSpent);
+                submittedToDBToast.show();
+
+            }
+
             // 9. Reset enterAmountSpent to 0.0
             enterAmountSpent = 0.0;
 
@@ -207,6 +233,26 @@ public class MainActivity extends Activity implements View.OnClickListener {
             startActivity(startChangeBudgetActivityIntent);
 
         }
+        else if (v.getId()==R.id.goToHistory) {
+
+            // start activity to go to data base screen
+            startActivity(startDataBaseActivityIntent);
+        }
+    }
+
+
+    // add a transaction to the data base
+    public void newTransaction(double dollarsSpent) {
+
+        DataBaseHandler dbHandler = new DataBaseHandler(this, null, null, 1);
+
+        dbCal = Calendar.getInstance();
+        dbYear = cal.get(Calendar.YEAR);
+        dbMonth = cal.get(Calendar.MONTH);
+
+        DollarsSpentTransaction newTransaction = new DollarsSpentTransaction(dbMonth, dbYear, dollarsSpent);
+
+        dbHandler.addTransaction(newTransaction);
     }
 
 

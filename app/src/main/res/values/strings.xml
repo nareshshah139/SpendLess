@@ -12,6 +12,7 @@
     <string name="submit_amount_spent_button">Submit</string>
     <string name="title_activity_first_screen">FirstScreen</string>
     <string name="dollars_left_in_budget">Dollars left in budget</string>
+    <string name="go_to_history">History</string>
 
 
 
@@ -34,4 +35,8 @@
 
     <string name="toggle_on">On</string>
     <string name="toggle_off">Off</string>
+    <string name="title_activity_data_base_screen">DataBaseScreen</string>
+
+    <!-- DataBaseScreen -->
+    <string name="go_back_to_main">Main</string>
 </resources>
