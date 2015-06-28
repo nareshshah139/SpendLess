@@ -8,22 +8,25 @@ public class DollarsSpentTransaction {
     private int _id;
     private int _month;
     private int _year;
+    private String _nameOfExpense;
     private double _dollarsSpent;
 
     public DollarsSpentTransaction() {
 
     }
 
-    public DollarsSpentTransaction(int id, int month, int year, double dollarsSpent) {
+    public DollarsSpentTransaction(int id, int month, int year, String expenseName, double dollarsSpent) {
         this._id = id;
         this._month = month;
         this._year = year;
+        this._nameOfExpense = expenseName;
         this._dollarsSpent = dollarsSpent;
     }
 
-    public DollarsSpentTransaction(int month, int year, double dollarsSpent) {
+    public DollarsSpentTransaction(int month, int year, String expenseName, double dollarsSpent) {
         this._month = month;
         this._year = year;
+        this._nameOfExpense = expenseName;
         this._dollarsSpent = dollarsSpent;
     }
 
@@ -58,5 +61,14 @@ public class DollarsSpentTransaction {
     public double getDollarsSpent() {
         return this._dollarsSpent;
     }
+
+    public void setExpenseName(String expenseName) {
+        this._nameOfExpense = expenseName;
+    }
+
+    public String getExpenseName() {
+        return this._nameOfExpense;
+    }
+
 
 }

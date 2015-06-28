@@ -45,10 +45,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     Calendar dbCal;
 
     EditText enterAmountSpentET;
+    EditText enterNameOfExpenseET;
     TextView changeAmountLeftTV;
 
     private double totalDollarsLeft;
     private double enterAmountSpent;
+    private String enterNameOfExpense;
 
     String tempTotalDollarsLeftString;
     String tempEnterAmountSpentString;
@@ -130,9 +132,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         totalDollarsLeft = Double.parseDouble(sharedPreferences.getString("totalDollarsLeft", "0.0"));
         enterAmountSpent = 0.0;
+        enterNameOfExpense = "N/A";
 
         enterAmountSpentET = (EditText) findViewById(R.id.enterAmountSpent);
         enterAmountSpentET.addTextChangedListener(enterAmountSpentListener);
+
+        enterNameOfExpenseET = (EditText) findViewById(R.id.enterNameOfExpense);
+        enterNameOfExpenseET.addTextChangedListener(enterNameOfExpenseListener);
 
         changeAmountLeftTV = (TextView) findViewById(R.id.show_total_amount_left);
         changeAmountLeftTV.setText("$" + (Double.toString(totalDollarsLeft)));
@@ -215,16 +221,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
             if (tempEnterAmountSpent != 0.0) {
 
                 // put into database
-                newTransaction(tempEnterAmountSpent);
+                newTransaction(enterNameOfExpense, tempEnterAmountSpent);
                 submittedToDBToast.show();
-
             }
 
-            // 9. Reset enterAmountSpent to 0.0
+            // 9. Reset enterAmountSpent to 0.0 and enterNameOfExpense to 'N/A'
             enterAmountSpent = 0.0;
+            enterNameOfExpense = "N/A";
 
             // 10. Clear the EditText box enterAmountSpentET
             enterAmountSpentET.setText(null);
+
 
 
         } else if (v.getId()==R.id.changeMonthlyBudgetButton) {
@@ -242,7 +249,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
     // add a transaction to the data base
-    public void newTransaction(double dollarsSpent) {
+    public void newTransaction(String expenseName, double dollarsSpent) {
 
         DataBaseHandler dbHandler = new DataBaseHandler(this, null, null, 1);
 
@@ -250,7 +257,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         dbYear = cal.get(Calendar.YEAR);
         dbMonth = cal.get(Calendar.MONTH);
 
-        DollarsSpentTransaction newTransaction = new DollarsSpentTransaction(dbMonth, dbYear, dollarsSpent);
+        DollarsSpentTransaction newTransaction = new DollarsSpentTransaction(dbMonth, dbYear, expenseName, dollarsSpent);
 
         dbHandler.addTransaction(newTransaction);
     }
@@ -261,12 +268,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             /*  Whener the Textwatcher is changed it check to see if the data entered is a double.
                 If it is, the value of the double is assigned to the variable enterAmountSpent.
                 If it's not, enterAmountSpent is assigned the value 0.0.
@@ -274,18 +279,31 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 If the exception is caught, will start a toast message saying user needs to enter
                 in the correct format.
              */
-
             try {
                 enterAmountSpent = Double.parseDouble(s.toString());
             } catch (NumberFormatException e) {
                 enterAmountSpent = 0.0;
             }
-
         }
 
         @Override
         public void afterTextChanged(Editable s) {
+        }
+    };
 
+    private TextWatcher enterNameOfExpenseListener = new TextWatcher() {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            enterNameOfExpense = s.toString();
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
         }
     };
 

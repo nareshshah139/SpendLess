@@ -19,6 +19,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     public static final String COL_ID = "ID";
     public static final String COL_MONTH = "MONTH";
     public static final String COL_YEAR = "YEAR";
+    public static final String COL_EXPENSE_NAME = "EXPENSE_NAME";
     public static final String COL_DOLLARS_SPENT = "DOLLARS_SPENT";
 
     public DataBaseHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -34,6 +35,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                 COL_ID + " INTEGER PRIMARY KEY," +
                 COL_MONTH + " INTEGER," +
                 COL_YEAR + " INTEGER," +
+                COL_EXPENSE_NAME + " TEXT," +
                 COL_DOLLARS_SPENT + " REAL" + ")";
         db.execSQL(CREATE_DOLLARS_SPENT_TRANSACTION_TABLE);
 
@@ -51,6 +53,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COL_MONTH, transaction.getMonth() );
         values.put(COL_YEAR, transaction.getYear() );
+        values.put(COL_EXPENSE_NAME, transaction.getExpenseName() );
         values.put(COL_DOLLARS_SPENT, transaction.getDollarsSpent() );
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -75,9 +78,10 @@ public class DataBaseHandler extends SQLiteOpenHelper {
             String ID = "ID: " + cursor.getString(0) + "\n";
             String MONTH = "Month: " + cursor.getString(1) + "\n";
             String YEAR = "Year: " + cursor.getString(2) + "\n";
-            String DOLLAR_SPENT = "Amount: " + "$" + cursor.getString(3) + "\n\n";
+            String EXPENSE_NAME = "Expense Name: " + cursor.getString(3) + "\n";
+            String DOLLAR_SPENT = "Amount: " + "$" + cursor.getString(4) + "\n\n";
 
-            totalString = ID + MONTH + YEAR + DOLLAR_SPENT;
+            totalString = ID + MONTH + YEAR + EXPENSE_NAME + DOLLAR_SPENT;
 
             data[index] = totalString;
 
