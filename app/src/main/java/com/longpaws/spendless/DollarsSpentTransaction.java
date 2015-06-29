@@ -6,7 +6,7 @@ package com.longpaws.spendless;
 public class DollarsSpentTransaction {
 
     private int _id;
-    private int _month;
+    private String _month;
     private int _year;
     private String _nameOfExpense;
     private double _dollarsSpent;
@@ -15,7 +15,7 @@ public class DollarsSpentTransaction {
 
     }
 
-    public DollarsSpentTransaction(int id, int month, int year, String expenseName, double dollarsSpent) {
+    public DollarsSpentTransaction(int id, String month, int year, String expenseName, double dollarsSpent) {
         this._id = id;
         this._month = month;
         this._year = year;
@@ -23,7 +23,7 @@ public class DollarsSpentTransaction {
         this._dollarsSpent = dollarsSpent;
     }
 
-    public DollarsSpentTransaction(int month, int year, String expenseName, double dollarsSpent) {
+    public DollarsSpentTransaction(String month, int year, String expenseName, double dollarsSpent) {
         this._month = month;
         this._year = year;
         this._nameOfExpense = expenseName;
@@ -38,11 +38,11 @@ public class DollarsSpentTransaction {
         return this._id;
     }
 
-    public void setMonth(int month) {
+    public void setMonth(String month) {
         this._month = month;
     }
 
-    public int getMonth() {
+    public String getMonth() {
         return this._month;
     }
 

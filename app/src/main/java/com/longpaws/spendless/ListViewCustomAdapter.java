@@ -53,26 +53,20 @@ public class ListViewCustomAdapter extends BaseAdapter {
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
-        //if (convertView == null) {
+        if (convertView == null) {
 
             convertView = inflater.inflate(R.layout.multi_col_layout, null);
             txtFirst = (TextView) convertView.findViewById(R.id.MONTH_YEAR_TEXTVIEW);
             txtSecond = (TextView) convertView.findViewById(R.id.EXPENSE_NAME_TEXTVIEW);
             txtThird = (TextView) convertView.findViewById(R.id.DOLLARS_SPENT_TEXTVIEW);
+       }
 
-            //convertView.setTag(holder);
+        HashMap<String, String> map = list.get(position);
+        txtFirst.setText(map.get(FIRST_COLUMN));
+        txtSecond.setText(map.get(SECOND_COLUMN));
+        txtThird.setText(map.get(THIRD_COLUMN));
 
-       // }
-
-            //holder = (ViewHolder) convertView.getTag();
-
-
-            HashMap<String, String> map = list.get(position);
-            txtFirst.setText(map.get(FIRST_COLUMN));
-            txtSecond.setText(map.get(SECOND_COLUMN));
-            txtThird.setText(map.get(THIRD_COLUMN));
-
-            return convertView;
+        return convertView;
     }
 
 

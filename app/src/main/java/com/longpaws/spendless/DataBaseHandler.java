@@ -41,7 +41,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         String CREATE_DOLLARS_SPENT_TRANSACTION_TABLE = "CREATE TABLE " +
                 TABLE_NAME + "(" +
                 COL_ID + " INTEGER PRIMARY KEY," +
-                COL_MONTH + " INTEGER," +
+                COL_MONTH + " TEXT," +
                 COL_YEAR + " INTEGER," +
                 COL_EXPENSE_NAME + " TEXT," +
                 COL_DOLLARS_SPENT + " REAL" + ")";

@@ -38,7 +38,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private int currentMonth;
     private int previousYear;
     private int previousMonth;
-    private int dbMonth;
+    private int dbMonthINT;
+    private String dbMonthSTRING;
     private int dbYear;
 
     Calendar cal;
@@ -256,11 +257,46 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         dbCal = Calendar.getInstance();
         dbYear = cal.get(Calendar.YEAR);
-        dbMonth = cal.get(Calendar.MONTH);
+        dbMonthINT = cal.get(Calendar.MONTH);
+        dbMonthSTRING = getMonthString(dbMonthINT);
 
-        DollarsSpentTransaction newTransaction = new DollarsSpentTransaction(dbMonth, dbYear, expenseName, dollarsSpent);
+        DollarsSpentTransaction newTransaction = new DollarsSpentTransaction(dbMonthSTRING, dbYear, expenseName, dollarsSpent);
 
         dbHandler.addTransaction(newTransaction);
+    }
+
+    public String getMonthString(int month) {
+
+        String monthString;
+        if (month == 0)
+            monthString = "January";
+        else if (month == 1)
+            monthString = "February";
+        else if (month == 2)
+            monthString = "March";
+        else if (month == 3)
+            monthString = "April";
+        else if (month == 4)
+            monthString = "May";
+        else if (month == 5)
+            monthString = "June";
+        else if (month == 6)
+            monthString = "July";
+        else if (month == 7)
+            monthString = "August";
+        else if (month == 8)
+            monthString = "September";
+        else if (month == 9)
+            monthString = "October";
+        else if (month == 10)
+            monthString = "November";
+        else if (month == 11)
+            monthString = "December";
+        else
+            monthString = "";
+
+        return monthString;
+
     }
 
 
