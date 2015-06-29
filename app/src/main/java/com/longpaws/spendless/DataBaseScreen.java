@@ -9,8 +9,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class DataBaseScreen extends Activity implements View.OnClickListener {
@@ -28,8 +33,6 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
         Button goToMainButton = (Button) findViewById(R.id.goBackToMain);
         goToMainButton.setOnClickListener(this);
 
-        textViewDataBase = (TextView) findViewById(R.id.textBoxDataBase);
-
         goBackToMainIntent = new Intent(this, MainActivity.class);
         viewDataBase();
     }
@@ -43,22 +46,35 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
     }
 
 
-    // not sure if it will work. Test. Test. Test.
 
 
+
+    // trial version. delete if does not work.
+    public void viewDataBase() {
+
+        ListView listView = (ListView) findViewById(R.id.list_view);
+        ArrayList<HashMap<String, String>> theList = new ArrayList<HashMap<String, String>>();
+        DataBaseHandler dbHandler = new DataBaseHandler(this, null, null, 1);
+
+        theList = dbHandler.displayDataBase();
+        ListViewCustomAdapter theAdapter = new ListViewCustomAdapter(this, theList);
+        listView.setAdapter(theAdapter);
+
+    }
+
+
+    /*
+    * ORIGIONAL VERSION.
     public void viewDataBase() {
 
         DataBaseHandler dbHandler = new DataBaseHandler(this, null, null, 1);
         String[] theArray = dbHandler.displayDataBase();
-        String theText = "";
 
-        for (int index = 0; index < theArray.length; index++) {
-            theText = theText + theArray[index];
-        }
-
-        textViewDataBase.setText(theText);
+        ArrayAdapter<String> theAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, theArray);
+        ListView listView = (ListView) findViewById(R.id.listview);
+        listView.setAdapter(theAdapter);
     }
-
+    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -78,9 +94,7 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
-
 
 }

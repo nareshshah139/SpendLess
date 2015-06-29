@@ -231,6 +231,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             // 10. Clear the EditText box enterAmountSpentET
             enterAmountSpentET.setText(null);
+            enterNameOfExpenseET.setText(null);
 
 
 

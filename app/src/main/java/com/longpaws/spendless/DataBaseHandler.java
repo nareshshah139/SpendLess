@@ -1,10 +1,18 @@
 package com.longpaws.spendless;
 
+import static com.longpaws.spendless.ListViewConstantsDB.FIRST_COLUMN;
+import static com.longpaws.spendless.ListViewConstantsDB.SECOND_COLUMN;
+import static com.longpaws.spendless.ListViewConstantsDB.THIRD_COLUMN;
+
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /*
  * Created by Mitch on 6/25/2015.
@@ -61,6 +69,54 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+
+
+
+
+
+
+
+
+
+    // trial version. delete if can't make it work. test. test. test.
+    public ArrayList<HashMap<String, String>> displayDataBase() {
+        String query = "SELECT * FROM " + TABLE_NAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast() ) {
+
+            HashMap<String, String> temp = new HashMap<String, String>();
+
+            String MONTH_YEAR_STRING = cursor.getString(1) + ", " + cursor.getString(2);
+            String EXPENSE_NAME_STRING = cursor.getString(3);
+            String DOLLARS_SPENT_STRING = "$" + cursor.getString(4);
+
+            temp.put(FIRST_COLUMN, MONTH_YEAR_STRING);
+            temp.put(SECOND_COLUMN, EXPENSE_NAME_STRING);
+            temp.put(THIRD_COLUMN, DOLLARS_SPENT_STRING);
+
+            list.add(temp);
+
+            cursor.moveToNext();
+        }
+
+        return list;
+    }
+
+
+
+
+
+
+
+
+    /*
+    * ORIGIONAL VERSION.
     public String[] displayDataBase() {
         String query = "SELECT * FROM " + TABLE_NAME;
 
@@ -72,16 +128,24 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         cursor.moveToFirst();
         int index = 0;
 
+
         while (!cursor.isAfterLast() ) {
             String totalString;
 
-            String ID = "ID: " + cursor.getString(0) + "\n";
-            String MONTH = "Month: " + cursor.getString(1) + "\n";
-            String YEAR = "Year: " + cursor.getString(2) + "\n";
-            String EXPENSE_NAME = "Expense Name: " + cursor.getString(3) + "\n";
-            String DOLLAR_SPENT = "Amount: " + "$" + cursor.getString(4) + "\n\n";
+            // Display whole database
+            // String ID = "ID: " + cursor.getString(0) + "\n";
+            // String MONTH = "Month: " + cursor.getString(1) + "\n";
+            // String YEAR = "Year: " + cursor.getString(2) + "\n";
+            // String EXPENSE_NAME = "Expense Name: " + cursor.getString(3) + "\n";
+            // String DOLLAR_SPENT = "Amount: " + "$" + cursor.getString(4) + "\n\n";
 
-            totalString = ID + MONTH + YEAR + EXPENSE_NAME + DOLLAR_SPENT;
+
+            String MONTH = "Month: " + cursor.getString(1);
+            String YEAR = "Year: " + cursor.getString(2);
+            String EXPENSE_NAME = "Expense Name: " + cursor.getString(3);
+            String DOLLAR_SPENT = "Amount: " + "$" + cursor.getString(4);
+
+            totalString = MONTH + YEAR + EXPENSE_NAME + DOLLAR_SPENT;
 
             data[index] = totalString;
 
@@ -93,4 +157,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         cursor.close();
         return data;
     }
+    */
 }
+
