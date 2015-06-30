@@ -20,10 +20,8 @@ import java.util.HashMap;
 public class DataBaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-
     public static final String DATABASE_NAME = "DollarsSpentDB.db";
     public static final String TABLE_NAME = "dollars_spent_transaction";
-
     public static final String COL_ID = "ID";
     public static final String COL_MONTH = "MONTH";
     public static final String COL_YEAR = "YEAR";
@@ -32,7 +30,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     public DataBaseHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
-
     }
 
     @Override
@@ -46,15 +43,12 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                 COL_EXPENSE_NAME + " TEXT," +
                 COL_DOLLARS_SPENT + " REAL" + ")";
         db.execSQL(CREATE_DOLLARS_SPENT_TRANSACTION_TABLE);
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
-
     }
 
     public void addTransaction(DollarsSpentTransaction transaction) {
@@ -69,27 +63,14 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-
-
-
-
-
-
-
-
-
-    // trial version. delete if can't make it work. test. test. test.
     public ArrayList<HashMap<String, String>> displayDataBase() {
         String query = "SELECT * FROM " + TABLE_NAME;
-
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-
         ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast() ) {
-
             HashMap<String, String> temp = new HashMap<String, String>();
 
             String MONTH_YEAR_STRING = cursor.getString(1) + ", " + cursor.getString(2);
@@ -101,62 +82,9 @@ public class DataBaseHandler extends SQLiteOpenHelper {
             temp.put(THIRD_COLUMN, DOLLARS_SPENT_STRING);
 
             list.add(temp);
-
             cursor.moveToNext();
         }
-
         return list;
     }
 
-
-
-
-
-
-
-
-    /*
-    * ORIGIONAL VERSION.
-    public String[] displayDataBase() {
-        String query = "SELECT * FROM " + TABLE_NAME;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        Cursor cursor = db.rawQuery(query, null);
-        String[] data = new String[cursor.getCount()];
-
-        cursor.moveToFirst();
-        int index = 0;
-
-
-        while (!cursor.isAfterLast() ) {
-            String totalString;
-
-            // Display whole database
-            // String ID = "ID: " + cursor.getString(0) + "\n";
-            // String MONTH = "Month: " + cursor.getString(1) + "\n";
-            // String YEAR = "Year: " + cursor.getString(2) + "\n";
-            // String EXPENSE_NAME = "Expense Name: " + cursor.getString(3) + "\n";
-            // String DOLLAR_SPENT = "Amount: " + "$" + cursor.getString(4) + "\n\n";
-
-
-            String MONTH = "Month: " + cursor.getString(1);
-            String YEAR = "Year: " + cursor.getString(2);
-            String EXPENSE_NAME = "Expense Name: " + cursor.getString(3);
-            String DOLLAR_SPENT = "Amount: " + "$" + cursor.getString(4);
-
-            totalString = MONTH + YEAR + EXPENSE_NAME + DOLLAR_SPENT;
-
-            data[index] = totalString;
-
-            cursor.moveToNext();
-            index++;
-        }
-
-        db.close();
-        cursor.close();
-        return data;
-    }
-    */
 }
-

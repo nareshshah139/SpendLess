@@ -20,77 +20,72 @@ import android.widget.ToggleButton;
 
 public class ChangeBudgetScreen extends Activity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
 
+    private String tempTotalMonthlyBudget;
+    private String toastChangeBudgetMessage;
+    private String formatToastMessage;
+    private String resetBudgetMessage;
+    private String autoResetOnMessage;
+    private String autoResetOffMessage;
     private double tempChangeMonthlyBudget;
 
+    private Toast budgetChangedToast;
+    private Toast incorrectFormatToast;
+    private Toast budgetResetToast;
+    private Toast autoResetTurnedOnToast;
+    private Toast autoResetTurnedOffToast;
+
     EditText changeMonthlyBudgetET;
-
-    Intent startMainActivityIntent;
-
-    SharedPreferences sharedPreferences;
     SharedPreferences.Editor prefEditor;
-
-    private String tempTotalMonthlyBudget;
-
-    String toastChangeBudget;
-    Toast budgetChangedToast;
-
-    Toast incorrectFormatToast;
-    String formatToastMessage;
-
-    String resetBudgetMessage;
-    Toast budgetResetToast;
-
-    String autoResetOnMessage;
-    Toast autoResetTurnedOnToast;
-
-    String autoResetOffMessage;
-    Toast autoResetTurnedOffToast;
-
+    SharedPreferences sharedPreferences;
     ToggleButton toggleButton;
-
+    Intent startMainActivityIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_budget_screen);
 
+        // Set up Shared Preference file and create the Shared Preference Editor
         sharedPreferences = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         prefEditor = sharedPreferences.edit();
 
+        // Initialize the EditText box and set the TextChangedListener
         changeMonthlyBudgetET = (EditText) findViewById(R.id.changeMonthlyBudgetEditText);
         changeMonthlyBudgetET.addTextChangedListener(changeMonthlyBudgetListener);
 
-        startMainActivityIntent = new Intent(this, MainActivity.class);
-
+        // Create buttons
         Button backToMainButton = (Button) findViewById(R.id.BackToMainButton);
-        backToMainButton.setOnClickListener(this);
-
         Button submitMonthlyBudgetChangeButton = (Button) findViewById(R.id.submitMonthlyChangeButton);
-        submitMonthlyBudgetChangeButton.setOnClickListener(this);
-
         Button resetBudgetButton = (Button) findViewById(R.id.resetBudgetNowButton);
+
+        // Create setOnClickListeners for each button
+        backToMainButton.setOnClickListener(this);
+        submitMonthlyBudgetChangeButton.setOnClickListener(this);
         resetBudgetButton.setOnClickListener(this);
 
+        // Create ToggleButton and setOnCheckedChangeListener for the ToggleButton
         toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
         toggleButton.setOnCheckedChangeListener(this);
 
-        // Toast Trial
-        toastChangeBudget = "Budget will reset on the first of the next month.";
-        budgetChangedToast = Toast.makeText(getApplicationContext(), toastChangeBudget, Toast.LENGTH_LONG);
-
+        // Create Toast messages
+        toastChangeBudgetMessage = "Budget will reset on the first of the next month.";
         formatToastMessage = "Dollar amount must be submitted in correct format. Example: 100.00";
-        incorrectFormatToast = Toast.makeText(getApplicationContext(), formatToastMessage, Toast.LENGTH_LONG);
-
         resetBudgetMessage = "Reset dollars left to budget.";
-        budgetResetToast = Toast.makeText(getApplicationContext(), resetBudgetMessage, Toast.LENGTH_SHORT);
-
         autoResetOnMessage = "Budget will reset every month";
-        autoResetTurnedOnToast = Toast.makeText(getApplicationContext(), autoResetOnMessage, Toast.LENGTH_SHORT);
-
         autoResetOffMessage = "Budget will not reset every month";
+
+        // Initialize Toasts
+        budgetChangedToast = Toast.makeText(getApplicationContext(), toastChangeBudgetMessage, Toast.LENGTH_LONG);
+        incorrectFormatToast = Toast.makeText(getApplicationContext(), formatToastMessage, Toast.LENGTH_LONG);
+        budgetResetToast = Toast.makeText(getApplicationContext(), resetBudgetMessage, Toast.LENGTH_SHORT);
+        autoResetTurnedOnToast = Toast.makeText(getApplicationContext(), autoResetOnMessage, Toast.LENGTH_SHORT);
         autoResetTurnedOffToast = Toast.makeText(getApplicationContext(), autoResetOffMessage, Toast.LENGTH_SHORT);
 
+        // Set the tempChangeMonthlyBudget variable to 0.0 by default whenever Activity starts
         tempChangeMonthlyBudget = 0.0;
+
+        // Create Intent to launch Main Activity Screen
+        startMainActivityIntent = new Intent(this, MainActivity.class);
     }
 
     @Override
@@ -116,76 +111,58 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
                 incorrectFormatToast.show();
                 changeMonthlyBudgetET.setText(null);
             } else {
-
                 prefEditor.putString("totalMonthlyBudget", Double.toString(tempChangeMonthlyBudget));
                 prefEditor.commit();
-
                 budgetChangedToast.show();
 
                 startActivity(startMainActivityIntent);
-
             }
         } else if (v.getId() == R.id.resetBudgetNowButton) {
-
             // reset total dollars left to equal total monthly
             // tempTotalMonthlyBudget = Double.parseDouble(sharedPreferences.getString("totalMonthlyBudget", "0.0"));
             // prefEditor.putString("totalDollarsLeft", Double.toString(tempTotalMonthlyBudget));
-
             tempTotalMonthlyBudget = sharedPreferences.getString("totalMonthlyBudget", "0.0");
             prefEditor.putString("totalDollarsLeft", tempTotalMonthlyBudget);
-
             prefEditor.commit();
-
             budgetResetToast.show();
         }
-
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
         if (isChecked)
         {
             prefEditor.putBoolean("AutoResetChecked", true);
             prefEditor.commit();
-
             autoResetTurnedOnToast.show();
         }
         else
         {
             prefEditor.putBoolean("AutoResetChecked", false);
             prefEditor.commit();
-
             autoResetTurnedOffToast.show();
         }
-
     }
 
     private TextWatcher changeMonthlyBudgetListener = new TextWatcher() {
 
-
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             try {
                 tempChangeMonthlyBudget = Double.parseDouble(s.toString());
             } catch (NumberFormatException e) {
                 tempChangeMonthlyBudget = 0.0;
             }
-
         }
 
         @Override
         public void afterTextChanged(Editable s) {
-
         }
     };
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -200,12 +177,10 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

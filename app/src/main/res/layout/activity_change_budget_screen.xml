@@ -10,9 +10,9 @@
 
     <Button
         android:id="@+id/BackToMainButton"
-        android:text="@string/back_to_main_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/back_to_main_button"/>
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -24,10 +24,10 @@
 
         <TextView
             android:id="@+id/changeMonthlyBudgetTextView"
-            android:text="@string/change_monthly_budget_TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:text="@string/change_monthly_budget_TextView"
             android:textSize="@dimen/change_budget_screen_headline" />
 
         <LinearLayout
@@ -69,11 +69,11 @@
 
         <TextView
             android:id="@+id/resetBudgetNow"
-            android:text="@string/reset_budget_now"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
+            android:text="@string/reset_budget_now"
             android:textSize="@dimen/change_budget_screen_headline" />
 
         <Button
@@ -95,11 +95,11 @@
 
         <TextView
             android:id="@+id/turnAutoResetOnOff"
-            android:text="@string/turn_auto_reset_OnOff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center|left"
+            android:text="@string/turn_auto_reset_OnOff"
             android:textSize="@dimen/change_budget_screen_headline" />
 
         <ToggleButton

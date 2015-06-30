@@ -3,10 +3,8 @@
     <dimen name="activity_horizontal_margin">8dp</dimen>
     <dimen name="activity_vertical_margin">8dp</dimen>
     <dimen name="enter_monthly_budget">36sp</dimen>
-
     <dimen name="total_dollars_left_main">72sp</dimen>
     <dimen name="dollars_left_in_budget_mainScreen">18sp</dimen>
-
     <dimen name="change_budget_screen_headline">28sp</dimen>
 
 </resources>
