@@ -88,18 +88,9 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
         startMainActivityIntent = new Intent(this, MainActivity.class);
     }
 
+    // Changes monthly budget, resets total dollars left in budget, starts Main Activity
     @Override
     public void onClick(View v) {
-
-        /*  If Back Button is clicked, starts activity to go to MainActivity.
-
-            If submit button is clicked:
-            1. Checks if tempMonthlyBudget == 0.0
-            2. If it does, shows incorrect format toast and resets the EditText
-            3. If not, saves the value of tempChangeMonthlyBudget in sharedPreferene "totalMonthlyBudget",
-               shows toast that budget is changed, starts intent to go to MainActivity
-
-         */
 
         if (v.getId()==R.id.BackToMainButton) {
 
@@ -107,6 +98,9 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
 
         } else if (v.getId()==R.id.submitMonthlyChangeButton) {
 
+            // If format is correct puts new monthly budget into the SharedPreference file
+            // If tempChangeMonthlyBudget is 0.0 (determined by value in EditText),
+            // EditText is set to null and incorrect format toast is started
             if (tempChangeMonthlyBudget==0.0) {
                 incorrectFormatToast.show();
                 changeMonthlyBudgetET.setText(null);
@@ -118,9 +112,7 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
                 startActivity(startMainActivityIntent);
             }
         } else if (v.getId() == R.id.resetBudgetNowButton) {
-            // reset total dollars left to equal total monthly
-            // tempTotalMonthlyBudget = Double.parseDouble(sharedPreferences.getString("totalMonthlyBudget", "0.0"));
-            // prefEditor.putString("totalDollarsLeft", Double.toString(tempTotalMonthlyBudget));
+            // Resets the total dollars left to equal the monthly budget
             tempTotalMonthlyBudget = sharedPreferences.getString("totalMonthlyBudget", "0.0");
             prefEditor.putString("totalDollarsLeft", tempTotalMonthlyBudget);
             prefEditor.commit();
@@ -128,6 +120,8 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
         }
     }
 
+    // Updates SharedPreferences stating whether the Auto Reset Toggle Button is checked on or off
+    // If on, budget will reset every new month when Main Activity starts.
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked)
@@ -144,6 +138,9 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
         }
     }
 
+
+    // If value in EditText is a double; assigns it to tempChangeMonthlyBudget
+    // If value is not a double, tempChangeMonthlyBudget is set to 0.0 by default
     private TextWatcher changeMonthlyBudgetListener = new TextWatcher() {
 
         @Override
