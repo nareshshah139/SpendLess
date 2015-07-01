@@ -4,13 +4,11 @@ import static com.longpaws.spendless.ListViewConstantsDB.FIRST_COLUMN;
 import static com.longpaws.spendless.ListViewConstantsDB.SECOND_COLUMN;
 import static com.longpaws.spendless.ListViewConstantsDB.THIRD_COLUMN;
 
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -32,6 +30,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
 
+    // Creates SQLite database with 5 columns defined in the public static final Strings above
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -45,12 +44,15 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_DOLLARS_SPENT_TRANSACTION_TABLE);
     }
 
+    // Creates new version of database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 
+    // Takes an instance of DollarsSpentTransaction and inserts corresponding data
+    // into corresponding columns in a new row in the QLite database
     public void addTransaction(DollarsSpentTransaction transaction) {
         ContentValues values = new ContentValues();
         values.put(COL_MONTH, transaction.getMonth() );
@@ -63,6 +65,10 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    // Displays entire database
+    // Returns ArrayList of HashMap that contain key value pair,
+    // Key: name of column in the TextView, Value: data from SQLite database
+    // Uses Cursor to put every row in the DB into the ArrayList
     public ArrayList<HashMap<String, String>> displayDataBase() {
         String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getWritableDatabase();
