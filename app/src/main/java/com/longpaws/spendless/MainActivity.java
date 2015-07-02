@@ -21,114 +21,62 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
 
-
 public class MainActivity extends Activity implements View.OnClickListener {
 
-
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor prefEditor;
-
-    Intent startFirstActivityIntent;
-    Intent startChangeBudgetActivityIntent;
-    Intent startDataBaseActivityIntent;
-
     private double tempTotalMonthlyBudget;
+    private double totalDollarsLeft;
+    private double enterAmountSpent;
     private int dayOfMonth;
     private int currentYear;
     private int currentMonth;
     private int previousYear;
     private int previousMonth;
     private int dbMonthINT;
-    private String dbMonthSTRING;
     private int dbYear;
+    private String dbMonthSTRING;
+    private String enterNameOfExpense;
+    private String tempTotalDollarsLeftString;
+    private String tempEnterAmountSpentString;
+    private String formatToastMessage;
+    private String submittedToDB;
+    private boolean isAutoResetChecked;
+    private BigDecimal totalDollarsLeftBigDecimal;
+    private BigDecimal enterAmountSpentBigDecimal;
+    private BigDecimal BigDecimalResult;
 
-    Calendar cal;
-    Calendar dbCal;
+    private Calendar cal;
+    private Calendar dbCal;
+    private Toast incorrectFormatToast;
+    private Toast submittedToDBToast;
+    private Intent startFirstActivityIntent;
+    private Intent startChangeBudgetActivityIntent;
+    private Intent startDataBaseActivityIntent;
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor prefEditor;
     EditText enterAmountSpentET;
     EditText enterNameOfExpenseET;
     TextView changeAmountLeftTV;
-
-    private double totalDollarsLeft;
-    private double enterAmountSpent;
-    private String enterNameOfExpense;
-
-    String tempTotalDollarsLeftString;
-    String tempEnterAmountSpentString;
-
-    BigDecimal totalDollarsLeftBigDecimal;
-    BigDecimal enterAmountSpentBigDecimal;
-    BigDecimal BigDecimalResult;
-
-    Toast incorrectFormatToast;
-    String formatToastMessage;
-
-    Toast submittedToDBToast;
-    String submittedToDB;
-
-    boolean isAutoResetChecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set up Shared Preference file and create the Shared Preference Editor
         sharedPreferences = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         prefEditor = sharedPreferences.edit();
 
-        /*  Checks to see if activity_started is in sharedPreferences.
-            If it is, "true" is returned but the statement evaluates to false because of the "!".
-            The condition is false and the statement is skipped, continuing with MainActivity.
-
-            If activity_started is not in sharedPreferences, "false" is returned but the
-            statement evaluates to "true" because of the "!".
-            The condition is true so the statement is executed, resulting in the Intent that
-            starts the FirstScreen activity.
-        */
+        // Starts FirstScreen if this is first time launching app
         if (!sharedPreferences.getBoolean("activity_started", false)) {
-            startFirstActivityIntent = new Intent(this, FirstScreen.class);
-            startActivity(startFirstActivityIntent);
-            finish();
+            activityHasNotStarted();
         }
 
-
-        /* Checks to see if it is the first of the month.
-           If it is, resets totalDollarsLeft to totalMonthlyBudget
-           from the sharedPreferences.
-         */
-        cal = Calendar.getInstance();
-        dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        currentYear = cal.get(Calendar.YEAR);
-        currentMonth = cal.get(Calendar.MONTH);
-        previousYear = sharedPreferences.getInt("Year", 0);
-        previousMonth = sharedPreferences.getInt("Month", 0);
-
+        // If AutoReset is checked in ChangeBudgetScreen and it is a new month
+        // call newMonthResetBudget which will reset budget and update previous month and year
         isAutoResetChecked = sharedPreferences.getBoolean("AutoResetChecked", true);
-
-        if (isAutoResetChecked) {
-
-            if ((currentYear > previousYear) || (currentMonth > previousMonth)) {
-
-                if (currentYear > previousYear) { // next year. reset both month and year.
-
-                    prefEditor.putInt("Year", currentYear);
-                    prefEditor.putInt("Month", currentMonth);
-
-                    tempTotalMonthlyBudget = Double.parseDouble(sharedPreferences.getString("totalMonthlyBudget", "0.0"));
-                    prefEditor.putString("totalDollarsLeft", Double.toString(tempTotalMonthlyBudget));
-
-                    prefEditor.commit();
-
-                } else { // next month, but same year.
-
-                    prefEditor.putInt("Month", currentMonth);
-
-                    tempTotalMonthlyBudget = Double.parseDouble(sharedPreferences.getString("totalMonthlyBudget", "0.0"));
-                    prefEditor.putString("totalDollarsLeft", Double.toString(tempTotalMonthlyBudget));
-
-                    prefEditor.commit();
-                }
-            }
+        if (isAutoResetChecked && isNewMonth() ) {
+            newMonthResetBudget();
         }
 
         totalDollarsLeft = Double.parseDouble(sharedPreferences.getString("totalDollarsLeft", "0.0"));
@@ -237,34 +185,78 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
         } else if (v.getId()==R.id.changeMonthlyBudgetButton) {
-
             // 1/2. Create intent to go to Change Budget Activity. Start intent.
             startActivity(startChangeBudgetActivityIntent);
-
         }
         else if (v.getId()==R.id.goToHistory) {
-
             // start activity to go to data base screen
             startActivity(startDataBaseActivityIntent);
         }
     }
 
 
+    // First Activity has not started - this is first time launching app
+    // Start FirstScreen Activity
+    private void activityHasNotStarted() {
+        startFirstActivityIntent = new Intent(this, FirstScreen.class);
+        startActivity(startFirstActivityIntent);
+        finish();
+    }
+
+    // Instantiates Calendar object and gets current Month and Year
+    // Also gets previous month and year from Shared Preference file
+    // If it is a new month or year, returns true; if not a new month, returns false
+    public boolean isNewMonth() {
+        cal = Calendar.getInstance();
+        dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        currentYear = cal.get(Calendar.YEAR);
+        currentMonth = cal.get(Calendar.MONTH);
+        previousYear = sharedPreferences.getInt("Year", 0);
+        previousMonth = sharedPreferences.getInt("Month", 0);
+
+        return (currentYear > previousYear || currentMonth > previousMonth);
+    }
+
+    // Determines if it is a new month or year since last login
+    // Sets totalDollarsLeft to equal totalMonthlyBudget (resets budget)
+    // Puts new value in Year and Month in Shared Preference to update last time app started
+    public void newMonthResetBudget() {
+
+        cal = Calendar.getInstance();
+        dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        currentYear = cal.get(Calendar.YEAR);
+        currentMonth = cal.get(Calendar.MONTH);
+        previousYear = sharedPreferences.getInt("Year", 0);
+        previousMonth = sharedPreferences.getInt("Month", 0);
+        if (currentYear > previousYear) { // next year. reset both month and year.
+            prefEditor.putInt("Year", currentYear);
+            prefEditor.putInt("Month", currentMonth);
+            tempTotalMonthlyBudget = Double.parseDouble(sharedPreferences.getString("totalMonthlyBudget", "0.0"));
+            prefEditor.putString("totalDollarsLeft", Double.toString(tempTotalMonthlyBudget));
+            prefEditor.commit();
+        } else { // next month, but same year.
+            prefEditor.putInt("Month", currentMonth);
+            tempTotalMonthlyBudget = Double.parseDouble(sharedPreferences.getString("totalMonthlyBudget", "0.0"));
+            prefEditor.putString("totalDollarsLeft", Double.toString(tempTotalMonthlyBudget));
+            prefEditor.commit();
+        }
+    }
+
+
     // add a transaction to the data base
     public void newTransaction(String expenseName, double dollarsSpent) {
-
         DataBaseHandler dbHandler = new DataBaseHandler(this, null, null, 1);
-
         dbCal = Calendar.getInstance();
         dbYear = cal.get(Calendar.YEAR);
         dbMonthINT = cal.get(Calendar.MONTH);
         dbMonthSTRING = getMonthString(dbMonthINT);
-
         DollarsSpentTransaction newTransaction = new DollarsSpentTransaction(dbMonthSTRING, dbYear, expenseName, dollarsSpent);
-
         dbHandler.addTransaction(newTransaction);
     }
 
+    // Returns string of month for corresponding int from Java Calendar
+    // Example: int 0 return "January" Example: int 3 returns "April"
+    // Used to put data in database Month column which takes a String as input
     public String getMonthString(int month) {
 
         String monthString;
@@ -296,7 +288,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             monthString = "";
 
         return monthString;
-
     }
 
 
@@ -370,4 +361,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
