@@ -5,6 +5,7 @@ package com.longpaws.spendless;
  */
 public class DollarsSpentTransaction {
 
+    // Data corresponding to columns in the database table
     private int _id;
     private String _month;
     private int _year;
@@ -12,8 +13,11 @@ public class DollarsSpentTransaction {
     private double _dollarsSpent;
 
     public DollarsSpentTransaction() {
-
     }
+
+    // Constructor for creating a DollarsSpentTransaction
+    // Takes arguments corresponding with table columns from the database
+    // Used to put a new transaction (row) into the database from the DataBaseHandler class
 
     public DollarsSpentTransaction(int id, String month, int year, String expenseName, double dollarsSpent) {
         this._id = id;
@@ -30,6 +34,7 @@ public class DollarsSpentTransaction {
         this._dollarsSpent = dollarsSpent;
     }
 
+    // Getters and Setters for all data in the class
     public void setID(int id) {
         this._id = id;
     }
@@ -69,6 +74,5 @@ public class DollarsSpentTransaction {
     public String getExpenseName() {
         return this._nameOfExpense;
     }
-
 
 }

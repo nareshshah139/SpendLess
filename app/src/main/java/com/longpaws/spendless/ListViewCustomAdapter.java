@@ -27,6 +27,8 @@ public class ListViewCustomAdapter extends BaseAdapter {
     TextView txtSecond;
     TextView txtThird;
 
+    // Constructor takes current activity and ArrayList<HashMap> as arguments
+    // ArrayList will be a list of data in each row of the database
     public ListViewCustomAdapter(Activity activity, ArrayList<HashMap<String, String>> list) {
         super();
         this.activity = activity;
@@ -48,6 +50,12 @@ public class ListViewCustomAdapter extends BaseAdapter {
         return 0;
     }
 
+    /*
+    // Sets each TextView to the corresponding TextView from the multi_col_layout
+    // Sets data from the HashMap to the appropriate TextView in the layout
+    // When database is displayed, all HashMaps in the list will set data to the
+    // Appropriate TextVew creating a multi-column ListView containing desired data from database
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -68,6 +76,5 @@ public class ListViewCustomAdapter extends BaseAdapter {
 
         return convertView;
     }
-
 
 }

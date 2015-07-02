@@ -17,117 +17,98 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-
 public class FirstScreen extends Activity implements View.OnClickListener {
 
     private double tempMonthlyBudget;
-    EditText enterMonthlyBudgetET;
-
-    Intent startMainActivityIntent;
-
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor prefEditor;
-
-    Calendar Cal;
+    private String formatToastMessage;
     private int startYear;
     private int startMonth;
 
-    Toast incorrectFormatToast;
-    String formatToastMessage;
+    private Calendar Cal;
+    private Toast incorrectFormatToast;
 
+    EditText enterMonthlyBudgetET;
+    Intent startMainActivityIntent;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor prefEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_screen);
 
+        // Set up Shared Preference file and create the Shared Preference Editor
         sharedPreferences = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         prefEditor = sharedPreferences.edit();
 
+        // Initialize the EditText box and set the TextChangedListener
         enterMonthlyBudgetET = (EditText) findViewById(R.id.enterMonthlyBudgetEditText);
         enterMonthlyBudgetET.addTextChangedListener(enterMonthlyBudgetListener);
 
+        // Create button and setOnClickListener
         Button submitMonthlyBudgetBtn = (Button) findViewById(R.id.submitMonthlyBudgetButton);
         submitMonthlyBudgetBtn.setOnClickListener(this);
 
-        startMainActivityIntent = new Intent(this, MainActivity.class);
-
-
+        // Create Toast and Toast message if user enters data in an incorrect format
         formatToastMessage = "Dollar amount must be submitted in correct format. Example: 100.00";
         incorrectFormatToast = Toast.makeText(getApplicationContext(), formatToastMessage, Toast.LENGTH_LONG);
 
+        // Creates the Calendar object to get the current month and year
         Cal = Calendar.getInstance();
         startYear = Cal.get(Calendar.YEAR);
         startMonth = Cal.get(Calendar.MONTH);
 
+        // Create intent to start Main Activity
+        startMainActivityIntent = new Intent(this, MainActivity.class);
 
+        // Creates and initializes tempMonthlyBudget to 0.0 by default;
+        // tempMonthlyBudget must be changed before being accepted
+        // Makes sure user enters a valid budget before starting Main Activity
         tempMonthlyBudget = 0.0;
     }
 
-
+    /* If format of tempMonthlyBudget is legal, updates Shared Preference file;
+    // Puts ActivityStarted, current Month, current Year, Total Monthly Budget, and
+    // Total Dollars Left into the Shared Preference file for future reference
+    // If format is illegal, incorrect format toast is displayed and EditText is reset
+    */
     @Override
     public void onClick(View v) {
 
-        /* When the submit button is clicked (first time app is opened) it will save
-           whatever is in tempMonthlyBudget variable (from the TextWatcher) into the
-           SharedPreference file "MyData" in "totalMonthlyBudget" and "totalDollarsLeft".
-           This is to initialize both values to wahtever the user entered.
-
-           It will also add the "activity_started" to the SharedPreference and thus the FirstScreen
-           activity will be skipped next time the app is opened.
-
-           Then it will launch the MainActivity intent
-
-           However, if tempMonthlyBudget contains 0.0, either by default, or because the user entered
-           the data in an incorrect format, then a Toast will be displayed, and the EditText will be
-           reset. Pressing the button does nothing in this case. The user will then have to enter a
-           new budget in correct format to be taken to the main activity page.
-         */
-
         if (v.getId()==R.id.submitMonthlyBudgetButton) {
 
+            // Checks if format is illegal (0.0)
             if (tempMonthlyBudget==0.0) {
                 incorrectFormatToast.show();
                 enterMonthlyBudgetET.setText(null);
             } else {
 
+                // If format is legal updates Shared Preference file
                 prefEditor.putBoolean("activity_started", true);
                 prefEditor.putString("totalMonthlyBudget", Double.toString(tempMonthlyBudget));
                 prefEditor.putString("totalDollarsLeft", Double.toString(tempMonthlyBudget));
-
-                // Put the current year and month into shared preferences
                 prefEditor.putInt("Year", startYear);
                 prefEditor.putInt("Month", startMonth);
-
-                // turn on auto reset every month by default when application launches initially
                 prefEditor.putBoolean("AutoResetChecked", true);
 
+                // Commits shared preference updates and starts Main Activity
                 prefEditor.commit();
-
                 startActivity(startMainActivityIntent);
                 finish();
-
             }
         }
-
     }
 
-
-
+    /* Assigns tempMonthlyBduget to value in EditText if format is legal
+    // Or assigns tempMonthlyBudget to 0.0 if format is illegal
+    // Legal format is a double other than 0.0
+    */
     private TextWatcher enterMonthlyBudgetListener = new TextWatcher() {
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
         }
-
-        /* Whenever the TextView is changed it will check to see if the value is a double.
-           If it is, it will assign tempMonthlyBudget to that double. If the user enters anything
-           other than a double, tempMonthlyBudget will be assigned a value of 0.0 by default.
-
-           Needs to be changed to force user to enter a double, preferably using while loop. Display
-           toast describing problem if they did not enter a double.
-         */
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -141,12 +122,9 @@ public class FirstScreen extends Activity implements View.OnClickListener {
 
         @Override
         public void afterTextChanged(Editable s) {
-
         }
 
     };
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
