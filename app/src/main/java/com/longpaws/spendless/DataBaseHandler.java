@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -73,11 +74,11 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast() ) {
-            HashMap<String, String> temp = new HashMap<String, String>();
+            HashMap<String, String> temp = new HashMap<>();
 
             String MONTH_YEAR_STRING = cursor.getString(1) + ", " + cursor.getString(2);
             String EXPENSE_NAME_STRING = cursor.getString(3);

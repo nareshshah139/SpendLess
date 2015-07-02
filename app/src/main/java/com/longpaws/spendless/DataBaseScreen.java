@@ -17,26 +17,25 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 public class DataBaseScreen extends Activity implements View.OnClickListener {
 
     Intent goBackToMainIntent;
-    TextView textViewDataBase;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_base_screen);
 
+        // Creates and/or initializes Button, OnClickListener, and Intent
         Button goToMainButton = (Button) findViewById(R.id.goBackToMain);
         goToMainButton.setOnClickListener(this);
-
         goBackToMainIntent = new Intent(this, MainActivity.class);
+
+        // Calls viewDataBase() displaying the 'entire' database
         viewDataBase();
     }
 
+    // If goBackToMain button is clicked, launch intent to start MainActivity
     @Override
     public void onClick(View v) {
 
@@ -45,36 +44,18 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
         }
     }
 
-
-
-
-
-    // trial version. delete if does not work.
+    // Displays entire database; calls displayDataBase() from DataBaseHandler
+    // This will display each row from the database in a row in ListView;
+    // And set each column accordingly as determined in ListViewCustomAdapter
     public void viewDataBase() {
 
         ListView listView = (ListView) findViewById(R.id.list_view);
-        ArrayList<HashMap<String, String>> theList = new ArrayList<HashMap<String, String>>();
         DataBaseHandler dbHandler = new DataBaseHandler(this, null, null, 1);
 
-        theList = dbHandler.displayDataBase();
+        ArrayList<HashMap<String, String>> theList = dbHandler.displayDataBase();
         ListViewCustomAdapter theAdapter = new ListViewCustomAdapter(this, theList);
         listView.setAdapter(theAdapter);
-
     }
-
-
-    /*
-    * ORIGIONAL VERSION.
-    public void viewDataBase() {
-
-        DataBaseHandler dbHandler = new DataBaseHandler(this, null, null, 1);
-        String[] theArray = dbHandler.displayDataBase();
-
-        ArrayAdapter<String> theAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, theArray);
-        ListView listView = (ListView) findViewById(R.id.listview);
-        listView.setAdapter(theAdapter);
-    }
-    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
