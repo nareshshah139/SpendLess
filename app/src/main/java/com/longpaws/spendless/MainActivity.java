@@ -83,29 +83,37 @@ public class MainActivity extends Activity implements View.OnClickListener {
         totalDollarsLeft = Double.parseDouble(sharedPreferences.getString("totalDollarsLeft", "0.0"));
         enterAmountSpent = 0.0;
         enterNameOfExpense = "N/A";
+
         // Create EditText and TextView boxes
         enterAmountSpentET = (EditText) findViewById(R.id.enterAmountSpent);
         enterNameOfExpenseET = (EditText) findViewById(R.id.enterNameOfExpense);
         totalAmountLeftTV = (TextView) findViewById(R.id.show_total_amount_left);
+
         //Set addTextChangedListeners
         enterAmountSpentET.addTextChangedListener(enterAmountSpentListener);
         enterNameOfExpenseET.addTextChangedListener(enterNameOfExpenseListener);
+
         // Set TextView to totalDollarsLeft
         totalAmountLeftTV.setText("$" + (Double.toString(totalDollarsLeft)));
+
         // Create buttons
         Button submitAmountSpentButton = (Button) findViewById(R.id.submitAmountSpentButton);
         Button changeMonthlyBudgetButton = (Button) findViewById(R.id.changeMonthlyBudgetButton);
         Button goToDataBaseScreenButton = (Button) findViewById(R.id.goToHistory);
+
         // Set onClickListener for buttons
         submitAmountSpentButton.setOnClickListener(this);
         changeMonthlyBudgetButton.setOnClickListener(this);
         goToDataBaseScreenButton.setOnClickListener(this);
+
         // Create Intents to change Activity
         startChangeBudgetActivityIntent = new Intent(this, ChangeBudgetScreen.class);
         startDataBaseActivityIntent = new Intent(this, DataBaseScreen.class);
+
         // Create Toast messages
         formatToastMessage = "Dollar amount must be submitted in correct format. Example: 100.00";
         submittedToDBMessage = "Submitted to DataBase";
+
         // Create Toasts
         incorrectFormatToast = Toast.makeText(getApplicationContext(), formatToastMessage, Toast.LENGTH_LONG);
         submittedToDBToast = Toast.makeText(getApplicationContext(), submittedToDBMessage, Toast.LENGTH_LONG);

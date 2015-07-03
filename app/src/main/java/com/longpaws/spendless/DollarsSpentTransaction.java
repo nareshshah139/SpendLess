@@ -15,10 +15,10 @@ public class DollarsSpentTransaction {
     public DollarsSpentTransaction() {
     }
 
+
     // Constructor for creating a DollarsSpentTransaction
     // Takes arguments corresponding with table columns from the database
     // Used to put a new transaction (row) into the database from the DataBaseHandler class
-
     public DollarsSpentTransaction(int id, String month, int year, String expenseName, double dollarsSpent) {
         this._id = id;
         this._month = month;

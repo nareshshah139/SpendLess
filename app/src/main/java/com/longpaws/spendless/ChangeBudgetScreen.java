@@ -88,6 +88,7 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
         startMainActivityIntent = new Intent(this, MainActivity.class);
     }
 
+
     // Changes monthly budget, resets total dollars left in budget, starts Main Activity
     @Override
     public void onClick(View v) {
@@ -120,8 +121,9 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
         }
     }
 
+
     // Updates SharedPreferences stating whether the Auto Reset Toggle Button is checked on or off
-    // If on, budget will reset every new month when Main Activity starts.
+    // If on, budget will reset every new month when Main Activity starts
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked)

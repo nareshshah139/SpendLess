@@ -35,6 +35,7 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
         viewDataBase();
     }
 
+
     // If goBackToMain button is clicked, launch intent to start MainActivity
     @Override
     public void onClick(View v) {
@@ -43,6 +44,7 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
             startActivity(goBackToMainIntent);
         }
     }
+
 
     // Displays entire database; calls displayDataBase() from DataBaseHandler
     // This will display each row from the database in a row in ListView;

@@ -20,9 +20,9 @@ import java.util.Calendar;
 public class FirstScreen extends Activity implements View.OnClickListener {
 
     private double tempMonthlyBudget;
-    private String formatToastMessage;
     private int startYear;
     private int startMonth;
+    private String formatToastMessage;
 
     private Calendar Cal;
     private Toast incorrectFormatToast;
@@ -67,6 +67,7 @@ public class FirstScreen extends Activity implements View.OnClickListener {
         tempMonthlyBudget = 0.0;
     }
 
+
     /* If format of tempMonthlyBudget is legal, updates Shared Preference file;
     // Puts ActivityStarted, current Month, current Year, Total Monthly Budget, and
     // Total Dollars Left into the Shared Preference file for future reference
@@ -98,6 +99,7 @@ public class FirstScreen extends Activity implements View.OnClickListener {
             }
         }
     }
+
 
     /* Assigns tempMonthlyBduget to value in EditText if format is legal
     // Or assigns tempMonthlyBudget to 0.0 if format is illegal

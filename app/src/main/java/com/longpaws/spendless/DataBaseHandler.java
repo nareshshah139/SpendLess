@@ -31,6 +31,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
 
+
     // Creates SQLite database with 5 columns defined in the public static final Strings above
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -45,12 +46,14 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_DOLLARS_SPENT_TRANSACTION_TABLE);
     }
 
+
     // Creates new version of database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
+
 
     // Takes an instance of DollarsSpentTransaction and inserts corresponding data
     // into corresponding columns in a new row in the QLite database
@@ -65,6 +68,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, values);
         db.close();
     }
+
 
     // Displays entire database
     // Returns ArrayList of HashMap that contain key value pair,
