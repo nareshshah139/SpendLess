@@ -38,7 +38,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private String tempTotalDollarsLeftString;
     private String tempEnterAmountSpentString;
     private String formatToastMessage;
-    private String submittedToDB;
+    private String submittedToDBMessage;
     private boolean isAutoResetChecked;
     private BigDecimal totalDollarsLeftBigDecimal;
     private BigDecimal enterAmountSpentBigDecimal;
@@ -56,7 +56,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     SharedPreferences.Editor prefEditor;
     EditText enterAmountSpentET;
     EditText enterNameOfExpenseET;
-    TextView changeAmountLeftTV;
+    TextView totalAmountLeftTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,129 +79,85 @@ public class MainActivity extends Activity implements View.OnClickListener {
             newMonthResetBudget();
         }
 
+        // Initializes variables to default setting; must be set before rest of onCreate
         totalDollarsLeft = Double.parseDouble(sharedPreferences.getString("totalDollarsLeft", "0.0"));
         enterAmountSpent = 0.0;
         enterNameOfExpense = "N/A";
-
+        // Create EditText and TextView boxes
         enterAmountSpentET = (EditText) findViewById(R.id.enterAmountSpent);
-        enterAmountSpentET.addTextChangedListener(enterAmountSpentListener);
-
         enterNameOfExpenseET = (EditText) findViewById(R.id.enterNameOfExpense);
+        totalAmountLeftTV = (TextView) findViewById(R.id.show_total_amount_left);
+        //Set addTextChangedListeners
+        enterAmountSpentET.addTextChangedListener(enterAmountSpentListener);
         enterNameOfExpenseET.addTextChangedListener(enterNameOfExpenseListener);
-
-        changeAmountLeftTV = (TextView) findViewById(R.id.show_total_amount_left);
-        changeAmountLeftTV.setText("$" + (Double.toString(totalDollarsLeft)));
-
+        // Set TextView to totalDollarsLeft
+        totalAmountLeftTV.setText("$" + (Double.toString(totalDollarsLeft)));
+        // Create buttons
         Button submitAmountSpentButton = (Button) findViewById(R.id.submitAmountSpentButton);
-        submitAmountSpentButton.setOnClickListener(this);
-
         Button changeMonthlyBudgetButton = (Button) findViewById(R.id.changeMonthlyBudgetButton);
-        changeMonthlyBudgetButton.setOnClickListener(this);
-
         Button goToDataBaseScreenButton = (Button) findViewById(R.id.goToHistory);
+        // Set onClickListener for buttons
+        submitAmountSpentButton.setOnClickListener(this);
+        changeMonthlyBudgetButton.setOnClickListener(this);
         goToDataBaseScreenButton.setOnClickListener(this);
-
+        // Create Intents to change Activity
         startChangeBudgetActivityIntent = new Intent(this, ChangeBudgetScreen.class);
         startDataBaseActivityIntent = new Intent(this, DataBaseScreen.class);
-
+        // Create Toast messages
         formatToastMessage = "Dollar amount must be submitted in correct format. Example: 100.00";
+        submittedToDBMessage = "Submitted to DataBase";
+        // Create Toasts
         incorrectFormatToast = Toast.makeText(getApplicationContext(), formatToastMessage, Toast.LENGTH_LONG);
-
-        submittedToDB = "Submitted to DataBase";
-        submittedToDBToast = Toast.makeText(getApplicationContext(), submittedToDB, Toast.LENGTH_LONG);
+        submittedToDBToast = Toast.makeText(getApplicationContext(), submittedToDBMessage, Toast.LENGTH_LONG);
     }
 
+    // Rounds enterAmountSpent to 2 decimals places, subtracts it from totalDollarsLeft,
+    // updates shared preference, updates the TextView, submits new transaction to database;
+    // Resets enterAmountSpent and nameOfExpense variables, resets corresponding EditText boxes
     public void onClick(View v) {
 
-        /* When the Submit button is clicked:
-           1. Creates temporary String reference variables that contain the values of
-              enterAmountSpent and totalDollarsLeft for BigDecimal conversion
-           2. Create BigDecimals out of the new temp strings
-           3. Subtracts the BigDecimal version of enterAmountSPent from the BigDecimal totalDollarsLeft
-              and assigns value to new BigDecimal result
-           4. Converts new BigDecimal 'result' back into a double and assigns it to totalDollarsLeft
-           5. Saves the value of totalDollarsLeft into the sharedPreferences file into the string
-              "totalDollarsLeft".
-           6. Commit() the change to sharedPreferences.
-           7. Set the TextView object of changeAmountLeftTV to the new value of totalDollarsLeft
-           8. Show Toast if user entered an incorrect format
-           9. Reset enterAmountSpent to the double 0.0;
-
-           When Change Budget button is clicked:
-           1. Create intent to go to changeMonthlyBudget screen
-           2. Start intent, launching the Change Budget screen
-         */
-
-
         if (v.getId()==R.id.submitAmountSpentButton) {
-
-            // 1. Creates temp string out of totalDollarsLeft and enterAmountSpent
-            tempTotalDollarsLeftString = String.valueOf(totalDollarsLeft);
-            tempEnterAmountSpentString = String.valueOf(enterAmountSpent);
-
-            // 2. Creates BigDecimals out of new temp strings
-            totalDollarsLeftBigDecimal = new BigDecimal(tempTotalDollarsLeftString).setScale(2, RoundingMode.HALF_UP);
+            // BigDecimal used for rounding
+            totalDollarsLeftBigDecimal = new BigDecimal(totalDollarsLeft).setScale(2, RoundingMode.HALF_UP);
             enterAmountSpentBigDecimal = new BigDecimal(enterAmountSpent).setScale(2, RoundingMode.HALF_UP);
-
-            //3. Subtracts BigDecimal and creates new BigDecimal result
             BigDecimalResult = totalDollarsLeftBigDecimal.subtract(enterAmountSpentBigDecimal);
-
-            //4. Converts BigDecimalResult back into a double and assigns it to totalDollarsLeft
             totalDollarsLeft = BigDecimalResult.doubleValue();
-
-
-            // 5/6. Saves and commits changes to SharedPreference file
             prefEditor.putString("totalDollarsLeft", Double.toString(totalDollarsLeft));
             prefEditor.commit();
+            totalAmountLeftTV.setText("$" + Double.toString(totalDollarsLeft));
 
-            // 7. Set changeAmountLeftTV TextView to new amount of totalDollarsLeft
-            changeAmountLeftTV.setText("$" + Double.toString(totalDollarsLeft));
-
-            // 8. If enterAmountSpent equals 0.0 (numberFormatException was caught),
-            //    display toast showing error message
             if (enterAmountSpent==0.0) {
                 incorrectFormatToast.show();
             }
 
-
             double tempEnterAmountSpent = enterAmountSpentBigDecimal.doubleValue();
-
-            // put into data base if enterAmountSpent does not equal 0.0
             if (tempEnterAmountSpent != 0.0) {
-
-                // put into database
                 newTransaction(enterNameOfExpense, tempEnterAmountSpent);
                 submittedToDBToast.show();
             }
 
-            // 9. Reset enterAmountSpent to 0.0 and enterNameOfExpense to 'N/A'
             enterAmountSpent = 0.0;
             enterNameOfExpense = "N/A";
-
-            // 10. Clear the EditText box enterAmountSpentET
             enterAmountSpentET.setText(null);
             enterNameOfExpenseET.setText(null);
 
-
-
         } else if (v.getId()==R.id.changeMonthlyBudgetButton) {
-            // 1/2. Create intent to go to Change Budget Activity. Start intent.
             startActivity(startChangeBudgetActivityIntent);
         }
         else if (v.getId()==R.id.goToHistory) {
-            // start activity to go to data base screen
             startActivity(startDataBaseActivityIntent);
         }
     }
 
 
-    // First Activity has not started - this is first time launching app
+    // Call when FirstActivity has not started - if this is first time launching app
     // Start FirstScreen Activity
     private void activityHasNotStarted() {
         startFirstActivityIntent = new Intent(this, FirstScreen.class);
         startActivity(startFirstActivityIntent);
         finish();
     }
+
 
     // Instantiates Calendar object and gets current Month and Year
     // Also gets previous month and year from Shared Preference file
@@ -217,11 +173,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         return (currentYear > previousYear || currentMonth > previousMonth);
     }
 
+
     // Determines if it is a new month or year since last login
     // Sets totalDollarsLeft to equal totalMonthlyBudget (resets budget)
     // Puts new value in Year and Month in Shared Preference to update last time app started
     public void newMonthResetBudget() {
-
         cal = Calendar.getInstance();
         dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
         currentYear = cal.get(Calendar.YEAR);
@@ -243,7 +199,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
 
-    // add a transaction to the data base
+    // Add a transaction to the data base
     public void newTransaction(String expenseName, double dollarsSpent) {
         DataBaseHandler dbHandler = new DataBaseHandler(this, null, null, 1);
         dbCal = Calendar.getInstance();
@@ -253,6 +209,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         DollarsSpentTransaction newTransaction = new DollarsSpentTransaction(dbMonthSTRING, dbYear, expenseName, dollarsSpent);
         dbHandler.addTransaction(newTransaction);
     }
+
 
     // Returns string of month for corresponding int from Java Calendar
     // Example: int 0 return "January" Example: int 3 returns "April"
@@ -291,7 +248,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
 
-
+    // When EditText is changed, if value entered is legal (a double other than 0.0)
+    // assign value entered to enterAmountSpent; if illegal, assign 0.0 to enterAmountSpent
     private TextWatcher enterAmountSpentListener = new TextWatcher() {
 
         @Override
@@ -300,13 +258,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            /*  Whener the Textwatcher is changed it check to see if the data entered is a double.
-                If it is, the value of the double is assigned to the variable enterAmountSpent.
-                If it's not, enterAmountSpent is assigned the value 0.0.
-
-                If the exception is caught, will start a toast message saying user needs to enter
-                in the correct format.
-             */
             try {
                 enterAmountSpent = Double.parseDouble(s.toString());
             } catch (NumberFormatException e) {
@@ -319,6 +270,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     };
 
+
+    // When EditText (expense name) is changed, assigns value entered to
+    // enterNameOfExpense; ragardless of what is entered, assign it to variable (everything legal)
     private TextWatcher enterNameOfExpenseListener = new TextWatcher() {
 
         @Override
@@ -334,11 +288,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         public void afterTextChanged(Editable s) {
         }
     };
-
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -362,18 +311,4 @@ public class MainActivity extends Activity implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
-
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
