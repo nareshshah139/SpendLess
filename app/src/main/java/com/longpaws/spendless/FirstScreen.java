@@ -17,6 +17,18 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+/*
+ * FirstScreen Activity is only called the first time the app is launched.
+ *
+ * A method in MainActivity (first screen to start) checks a Shared Preference file to see if
+ * Activity has started before. If it has, it skips the Intent to FirstScreen. If Activity has not
+ * started, it starts the FirstScreen Activity launching this screen.
+ *
+ * All the user does in the Activity is enters their origional monthly budget. This will save their
+ * monthly budget in SharedPreferences (to make sure this screen is not displayed again) and then
+ * start the MainActivity intent.
+ */
+
 public class FirstScreen extends Activity implements View.OnClickListener {
 
     private double tempMonthlyBudget;

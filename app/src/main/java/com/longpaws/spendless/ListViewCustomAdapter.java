@@ -17,6 +17,14 @@ import java.util.HashMap;
 
 /**
  * Created by Mitch on 6/28/2015.
+ *
+ * Sets up the ListView displaying data in organized columns.
+ *
+ * Links key from each HashMap in the ArrayList to the TextView that will display the data in the
+ * value of the HashMap.
+ *
+ * When used in the DataBaseScreen, this will display all the data querried from the DataBase
+ * in organized columns.
  */
 
 public class ListViewCustomAdapter extends BaseAdapter {

@@ -17,6 +17,16 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/*
+ * Screen/Activity that shows spending history.
+ *
+ * Currently, the only method created is viewDatabase() which uses a DataBaseHandler object to
+ * display the entire contents of the database.
+ *
+ * Uses the ArrayList returned from the DataBaseHandler class and the ListView to display contents
+ * of database on the screen.
+ */
+
 public class DataBaseScreen extends Activity implements View.OnClickListener {
 
     Intent goBackToMainIntent;

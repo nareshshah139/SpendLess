@@ -15,6 +15,18 @@ import java.util.HashMap;
 
 /*
  * Created by Mitch on 6/25/2015.
+ *
+ * Handles all database activity.
+ *
+ * Instantiating an object from this class can create a database, add a new transaction to the
+ * database, and return an ArrayList containing all of the data from the database.
+ *
+ * An object of this class used with the custom ListView adapter will display contents of the database
+ * inside the desired ListView.
+ *
+ * Currently, the only option to display the database is by using a querry to select all data from
+ * the table. This needs to be changed to select certain data that the user requires; for instance,
+ * giving the user the option to search for transaction that took place only during a desired month.
  */
 public class DataBaseHandler extends SQLiteOpenHelper {
 

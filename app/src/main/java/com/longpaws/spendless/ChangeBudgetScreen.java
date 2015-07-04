@@ -17,6 +17,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+/*
+   Screen/activity that allows users to change settings. User have 3 options:
+   1. Change their monthly budget
+   2. Reset remaining budget to their monthly budget
+   3. Turn on/off auto reset - budget will reset every new month by default
+
+   These three options are controlled by buttons and an EditText to change monthly budget that
+   takes a double as its value.
+
+   User returns to the main activity by clicking 'main' button or, currently, submitting
+   a change monthly budget which will start a main activity intent
+ */
+
 
 public class ChangeBudgetScreen extends Activity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
 

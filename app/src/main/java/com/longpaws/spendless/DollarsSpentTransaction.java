@@ -2,6 +2,15 @@ package com.longpaws.spendless;
 
 /*
  * Created by Mitch on 6/25/2015.
+ *
+ * Creates a new transaction object.
+ *
+ * New transactions are submitted to the DataBase using the DataBaseHandler class.
+ * Arguments of a DollarsSpentTransaction (id, month, year, name, dollar_amount) correspond
+ * to the columns in the DataBase.
+ *
+ * When a DollarsSpentTransaction object is submitted to the DataBase, it can be viewed in the
+ * DataBaseScreen using a method such as viewDataBase();
  */
 public class DollarsSpentTransaction {
 

@@ -21,6 +21,24 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
 
+/*
+ * The MainActivity for the App.
+ *
+ * This is the main screen that users interact with.
+ * It has two buttons that start intents to take user to the ChangeBudgetScreen and the
+ * History screen.
+ *
+ * This screen focuses on display the remaining dollar amount in their budget for the current month.
+ * It has two EditText boxes that take dollar amount of expense, and name of expense which are used
+ * to put a transaction into the database.
+ *
+ * On submitting the transaction, the dollar amount of the transaction is subtracted from the remaining
+ * budget showing an updated remaining budget.
+ *
+ * This activity checks to see if the current month is a new month since the last time the user logged
+ * in, and if it is will reset the monthly budget assuming the user has enabled auto budget reset.
+ */
+
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private double tempTotalMonthlyBudget;
@@ -73,7 +91,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
 
         // If AutoReset is checked in ChangeBudgetScreen and it is a new month
-        // call newMonthResetBudget which will reset budget and update previous month and year
+        // call newMonthResetBudget which will reset remaining budget
         isAutoResetChecked = sharedPreferences.getBoolean("AutoResetChecked", true);
         if (isAutoResetChecked && isNewMonth() ) {
             newMonthResetBudget();
