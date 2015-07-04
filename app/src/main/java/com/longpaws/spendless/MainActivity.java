@@ -129,7 +129,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         startDataBaseActivityIntent = new Intent(this, DataBaseScreen.class);
 
         // Create Toast messages
-        formatToastMessage = "Dollar amount must be submitted in correct format. Example: 100.00";
+        formatToastMessage = "Dollar amount must be greater than 0.0 and submitted in correct format: " +
+                "ex. 100.00";
         submittedToDBMessage = "Submitted to DataBase";
 
         // Create Toasts

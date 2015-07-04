@@ -62,7 +62,8 @@ public class FirstScreen extends Activity implements View.OnClickListener {
         submitMonthlyBudgetBtn.setOnClickListener(this);
 
         // Create Toast and Toast message if user enters data in an incorrect format
-        formatToastMessage = "Dollar amount must be submitted in correct format. Example: 100.00";
+        formatToastMessage = "Dollar amount must be greater than 0.0 and submitted in correct format: " +
+                "ex. 100.00";
         incorrectFormatToast = Toast.makeText(getApplicationContext(), formatToastMessage, Toast.LENGTH_LONG);
 
         // Creates the Calendar object to get the current month and year

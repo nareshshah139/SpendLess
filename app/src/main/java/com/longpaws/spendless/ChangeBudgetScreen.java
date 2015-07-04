@@ -39,13 +39,15 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
     private String resetBudgetMessage;
     private String autoResetOnMessage;
     private String autoResetOffMessage;
+    private String budgetChangedAutoResetOnMessage;
     private double tempChangeMonthlyBudget;
 
-    private Toast budgetChangedToast;
+    private Toast budgetChangedAutoResetOffToast;
     private Toast incorrectFormatToast;
     private Toast budgetResetToast;
     private Toast autoResetTurnedOnToast;
     private Toast autoResetTurnedOffToast;
+    private Toast budgetChangedAutoResetOnToast;
 
     EditText changeMonthlyBudgetET;
     SharedPreferences.Editor prefEditor;
@@ -81,18 +83,23 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
         toggleButton.setOnCheckedChangeListener(this);
 
         // Create Toast messages
-        toastChangeBudgetMessage = "Budget will reset on the first of the next month.";
-        formatToastMessage = "Dollar amount must be submitted in correct format. Example: 100.00";
+        toastChangeBudgetMessage = "Monthly budget successfully changed";
+        formatToastMessage = "Dollar amount must be greater than 0.0 and submitted in correct format: " +
+                "ex. 100.00";
         resetBudgetMessage = "Reset dollars left to budget.";
         autoResetOnMessage = "Budget will reset every month";
         autoResetOffMessage = "Budget will not reset every month";
+        budgetChangedAutoResetOnMessage = "Monthly budget successfully changed. Budget " +
+                "will reset next month.";
 
         // Initialize Toasts
-        budgetChangedToast = Toast.makeText(getApplicationContext(), toastChangeBudgetMessage, Toast.LENGTH_LONG);
+        budgetChangedAutoResetOffToast = Toast.makeText(getApplicationContext(), toastChangeBudgetMessage, Toast.LENGTH_LONG);
         incorrectFormatToast = Toast.makeText(getApplicationContext(), formatToastMessage, Toast.LENGTH_LONG);
         budgetResetToast = Toast.makeText(getApplicationContext(), resetBudgetMessage, Toast.LENGTH_SHORT);
         autoResetTurnedOnToast = Toast.makeText(getApplicationContext(), autoResetOnMessage, Toast.LENGTH_SHORT);
         autoResetTurnedOffToast = Toast.makeText(getApplicationContext(), autoResetOffMessage, Toast.LENGTH_SHORT);
+        budgetChangedAutoResetOnToast = Toast.makeText(getApplicationContext(),
+                budgetChangedAutoResetOnMessage, Toast.LENGTH_SHORT);
 
         // Set the tempChangeMonthlyBudget variable to 0.0 by default whenever Activity starts
         tempChangeMonthlyBudget = 0.0;
@@ -102,7 +109,8 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
     }
 
 
-    // Changes monthly budget, resets total dollars left in budget, starts Main Activity
+    // Changes monthly budget, resets total dollars left in budget, dispalys appropriate Toast
+    // depending on if AutoReset is checked on or off
     @Override
     public void onClick(View v) {
 
@@ -121,9 +129,12 @@ public class ChangeBudgetScreen extends Activity implements View.OnClickListener
             } else {
                 prefEditor.putString("totalMonthlyBudget", Double.toString(tempChangeMonthlyBudget));
                 prefEditor.commit();
-                budgetChangedToast.show();
 
-                startActivity(startMainActivityIntent);
+                boolean isAutoResetChecked = sharedPreferences.getBoolean("AutoResetChecked", true);
+                if (isAutoResetChecked)
+                    budgetChangedAutoResetOnToast.show();
+                else
+                    budgetChangedAutoResetOffToast.show();
             }
         } else if (v.getId() == R.id.resetBudgetNowButton) {
             // Resets the total dollars left to equal the monthly budget
