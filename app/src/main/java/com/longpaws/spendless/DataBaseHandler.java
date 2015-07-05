@@ -110,4 +110,29 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         return list;
     }
 
+
+
+    // DELETE IF DOES NOT WORK. THIS IS A TEST!!!!
+    // Test method to display an individual month from the database
+    // Needs to be called from the DataBaseScreen by instantiating a DataBaseHandler object
+    // And then having an ArrayList equal the ArrayList that is returned from the method.
+    // From there the newly created ArrayList can use the adapter class to display the contents
+    // of the ArrayList into the ListView
+    public ArrayList<HashMap<String, String>> displayMonth(String Month, int Year) {
+
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_MONTH + " = " + Month +
+                " AND " + COL_YEAR + " = " + Year;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+        cursor.moveToFirst();
+
+        // Body similar to displayDataBase() above
+        // Next edit adapter class and/or DataBaseScreen
+
+        return list;
+
+    }
+
 }
