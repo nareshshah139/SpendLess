@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
@@ -120,29 +121,35 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     // of the ArrayList into the ListView
     public ArrayList<HashMap<String, String>> displayMonth(String Month, int Year) {
 
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_MONTH + " = " + Month +
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_MONTH + " = " + "\"" + Month + "\"" +
                 " AND " + COL_YEAR + " = " + Year;
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
         ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
-        cursor.moveToFirst();
 
-        // Body similar to displayDataBase() above
-        // Curso iterates through each row and add desired data into a HashMap in the ArrayList
-        while (!cursor.isAfterLast() ) {
-            HashMap<String, String> temp = new HashMap<>();
 
-            String MONTH_YEAR_STRING = cursor.getString(1) + ", " + cursor.getString(2);
-            String EXPENSE_NAME_STRING = cursor.getString(3);
-            String DOLLARS_SPENT_STRING = "$" + cursor.getString(4);
+        try {
+            Cursor cursor = db.rawQuery(query, null);
+            cursor.moveToFirst();
 
-            temp.put(FIRST_COLUMN, MONTH_YEAR_STRING);
-            temp.put(SECOND_COLUMN, EXPENSE_NAME_STRING);
-            temp.put(THIRD_COLUMN, DOLLARS_SPENT_STRING);
+            // Body similar to displayDataBase() above
+            // Cursor iterates through each row and add desired data into a HashMap in the ArrayList
+            while (!cursor.isAfterLast()) {
+                HashMap<String, String> temp = new HashMap<>();
 
-            list.add(temp);
-            cursor.moveToNext();
+                String MONTH_YEAR_STRING = cursor.getString(1) + ", " + cursor.getString(2);
+                String EXPENSE_NAME_STRING = cursor.getString(3);
+                String DOLLARS_SPENT_STRING = "$" + cursor.getString(4);
+
+                temp.put(FIRST_COLUMN, MONTH_YEAR_STRING);
+                temp.put(SECOND_COLUMN, EXPENSE_NAME_STRING);
+                temp.put(THIRD_COLUMN, DOLLARS_SPENT_STRING);
+
+                list.add(temp);
+                cursor.moveToNext();
+            }
+        } catch (SQLiteException e) {
+            return list;
         }
         return list;
 

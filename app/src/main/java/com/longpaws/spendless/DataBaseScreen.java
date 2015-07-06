@@ -6,15 +6,20 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 /*
@@ -29,7 +34,16 @@ import java.util.HashMap;
 
 public class DataBaseScreen extends Activity implements View.OnClickListener {
 
+    private String enteredMonth;
+    private int enteredYear;
+    private int currentYear;
+    private String currentMonth;
+
+    private Calendar calendar;
+
     Intent goBackToMainIntent;
+    EditText enterYearET;
+    EditText enterMonthET;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +55,43 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
         goToMainButton.setOnClickListener(this);
         goBackToMainIntent = new Intent(this, MainActivity.class);
 
-        // Calls viewDataBase() displaying the 'entire' database
-        viewDataBase();
+        // Create button and setOnClickListener
+        Button submitMonthYearQueryButton = (Button) findViewById(R.id.submitMonthYearQuery);
+        submitMonthYearQueryButton.setOnClickListener(this);
+
+        // Create EditText boxes
+        enterMonthET = (EditText) findViewById(R.id.enterMonth);
+        enterYearET = (EditText) findViewById(R.id.enterYear);
+
+        // Set addTextChangedListener
+        enterMonthET.addTextChangedListener(enterMonthListener);
+        enterYearET.addTextChangedListener(enterYearListener);
+
+        // Creates calendar instance and gets current month/year
+        calendar = Calendar.getInstance();
+        currentMonth = MainActivity.getMonthString(calendar.get(Calendar.MONTH));
+        currentYear = calendar.get(Calendar.YEAR);
+
+        // Calls viewDataBase() displaying the 'entire' database by default
+        // viewDataBase();
+
+        // Calls viewMonth() with currentMonth/currentYear displaying the spending history
+        // for the current month by default; when a new month/year combo is submitted it will
+        // display the spending history for the desired month/year
+        viewMonth(currentMonth, currentYear);
     }
 
 
     // If goBackToMain button is clicked, launch intent to start MainActivity
+    // If submitMonthYearQuery is clicked, show Database for specific month/year
     @Override
     public void onClick(View v) {
 
         if (v.getId()== R.id.goBackToMain) {
             startActivity(goBackToMainIntent);
+        } else if (v.getId()==R.id.submitMonthYearQuery) {
+            viewMonth(enteredMonth, enteredYear);
+            Log.w("TAG", "The button got clicked.");
         }
     }
 
@@ -79,6 +119,54 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
         ListViewCustomAdapter theAdapter = new ListViewCustomAdapter(this, theList);
         listView.setAdapter(theAdapter);
     }
+
+
+
+    // TextWatchers will assign value that user enters into appropriate variables
+    // when EditText is changed;
+    // These values will be used as arguments when viewMonth() is called when
+    // the Submit button is clicked; displaying the spending from desired month in the ListView
+    private TextWatcher enterMonthListener = new TextWatcher() {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        // Assigns value that user entered in the enterMonth EditText to the String variable
+        // enteredMonth
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            enteredMonth = s.toString();
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    private TextWatcher enterYearListener = new TextWatcher() {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        // Assigns value that user entered in the enterYear EditText to the int variable enteredYear
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            try {
+                enteredYear = Integer.parseInt(s.toString());
+            } catch (NumberFormatException e) {
+                enteredYear = 0;
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    };
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -189,7 +189,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     // Instantiates Calendar object and gets current Month and Year
     // Also gets previous month and year from Shared Preference file
     // If it is a new month or year, returns true; if not a new month, returns false
-    public boolean isNewMonth() {
+    private boolean isNewMonth() {
         cal = Calendar.getInstance();
         dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
         currentYear = cal.get(Calendar.YEAR);
@@ -204,7 +204,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     // Determines if it is a new month or year since last login
     // Sets totalDollarsLeft to equal totalMonthlyBudget (resets budget)
     // Puts new value in Year and Month in Shared Preference to update last time app started
-    public void newMonthResetBudget() {
+    private void newMonthResetBudget() {
         cal = Calendar.getInstance();
         dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
         currentYear = cal.get(Calendar.YEAR);
@@ -227,7 +227,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
     // Add a transaction to the data base
-    public void newTransaction(String expenseName, double dollarsSpent) {
+    private void newTransaction(String expenseName, double dollarsSpent) {
         DataBaseHandler dbHandler = new DataBaseHandler(this, null, null, 1);
         dbCal = Calendar.getInstance();
         dbYear = cal.get(Calendar.YEAR);
@@ -241,7 +241,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     // Returns string of month for corresponding int from Java Calendar
     // Example: int 0 return "January" Example: int 3 returns "April"
     // Used to put data in database Month column which takes a String as input
-    public String getMonthString(int month) {
+    public static String getMonthString(int month) {
 
         String monthString;
         if (month == 0)
