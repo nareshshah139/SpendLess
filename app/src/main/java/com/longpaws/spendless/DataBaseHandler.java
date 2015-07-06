@@ -129,8 +129,21 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         cursor.moveToFirst();
 
         // Body similar to displayDataBase() above
-        // Next edit adapter class and/or DataBaseScreen
+        // Curso iterates through each row and add desired data into a HashMap in the ArrayList
+        while (!cursor.isAfterLast() ) {
+            HashMap<String, String> temp = new HashMap<>();
 
+            String MONTH_YEAR_STRING = cursor.getString(1) + ", " + cursor.getString(2);
+            String EXPENSE_NAME_STRING = cursor.getString(3);
+            String DOLLARS_SPENT_STRING = "$" + cursor.getString(4);
+
+            temp.put(FIRST_COLUMN, MONTH_YEAR_STRING);
+            temp.put(SECOND_COLUMN, EXPENSE_NAME_STRING);
+            temp.put(THIRD_COLUMN, DOLLARS_SPENT_STRING);
+
+            list.add(temp);
+            cursor.moveToNext();
+        }
         return list;
 
     }

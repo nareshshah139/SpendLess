@@ -69,6 +69,17 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
         listView.setAdapter(theAdapter);
     }
 
+    // TEST METHOD.
+    public void viewMonth(String Month, int Year) {
+
+        ListView listView = (ListView) findViewById(R.id.list_view);
+        DataBaseHandler dbHandler = new DataBaseHandler(this, null, null, 1);
+
+        ArrayList<HashMap<String, String>> theList = dbHandler.displayMonth(Month, Year);
+        ListViewCustomAdapter theAdapter = new ListViewCustomAdapter(this, theList);
+        listView.setAdapter(theAdapter);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
