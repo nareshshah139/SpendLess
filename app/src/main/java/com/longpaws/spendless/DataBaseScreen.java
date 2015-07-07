@@ -72,12 +72,7 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
         currentMonth = MainActivity.getMonthString(calendar.get(Calendar.MONTH));
         currentYear = calendar.get(Calendar.YEAR);
 
-        // Calls viewDataBase() displaying the 'entire' database by default
-        // viewDataBase();
-
-        // Calls viewMonth() with currentMonth/currentYear displaying the spending history
-        // for the current month by default; when a new month/year combo is submitted it will
-        // display the spending history for the desired month/year
+        // Calls viewMonth() with currentMonth/currentYear by default
         viewMonth(currentMonth, currentYear);
     }
 
@@ -91,7 +86,6 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
             startActivity(goBackToMainIntent);
         } else if (v.getId()==R.id.submitMonthYearQuery) {
             viewMonth(enteredMonth, enteredYear);
-            Log.w("TAG", "The button got clicked.");
         }
     }
 
@@ -100,7 +94,6 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
     // This will display each row from the database in a row in ListView;
     // And set each column accordingly as determined in ListViewCustomAdapter
     public void viewDataBase() {
-
         ListView listView = (ListView) findViewById(R.id.list_view);
         DataBaseHandler dbHandler = new DataBaseHandler(this, null, null, 1);
 
@@ -109,9 +102,9 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
         listView.setAdapter(theAdapter);
     }
 
-    // TEST METHOD.
+    // Display data for Month/Year entered as arguments
+    // Will data for each row in corresponding column in the ListView
     public void viewMonth(String Month, int Year) {
-
         ListView listView = (ListView) findViewById(R.id.list_view);
         DataBaseHandler dbHandler = new DataBaseHandler(this, null, null, 1);
 
@@ -119,7 +112,6 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
         ListViewCustomAdapter theAdapter = new ListViewCustomAdapter(this, theList);
         listView.setAdapter(theAdapter);
     }
-
 
 
     // TextWatchers will assign value that user enters into appropriate variables
@@ -130,7 +122,6 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
 
         // Assigns value that user entered in the enterMonth EditText to the String variable
@@ -142,7 +133,6 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
 
         @Override
         public void afterTextChanged(Editable s) {
-
         }
     };
 
