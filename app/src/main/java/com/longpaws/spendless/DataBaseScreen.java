@@ -1,5 +1,9 @@
 package com.longpaws.spendless;
 
+import static com.longpaws.spendless.ListViewConstantsDB.FIRST_COLUMN;
+import static com.longpaws.spendless.ListViewConstantsDB.SECOND_COLUMN;
+import static com.longpaws.spendless.ListViewConstantsDB.THIRD_COLUMN;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -44,6 +48,7 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
     Intent goBackToMainIntent;
     EditText enterYearET;
     EditText enterMonthET;
+    TextView totalDollarsTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +64,10 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
         Button submitMonthYearQueryButton = (Button) findViewById(R.id.submitMonthYearQuery);
         submitMonthYearQueryButton.setOnClickListener(this);
 
-        // Create EditText boxes
+        // Create EditText boxes and TextView
         enterMonthET = (EditText) findViewById(R.id.enterMonth);
         enterYearET = (EditText) findViewById(R.id.enterYear);
+        totalDollarsTV = (TextView) findViewById(R.id.totalTextView);
 
         // Set addTextChangedListener
         enterMonthET.addTextChangedListener(enterMonthListener);
@@ -103,7 +109,7 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
     }
 
     // Display data for Month/Year entered as arguments
-    // Will data for each row in corresponding column in the ListView
+    // Will display data for each row in corresponding column in the ListView
     public void viewMonth(String Month, int Year) {
         ListView listView = (ListView) findViewById(R.id.list_view);
         DataBaseHandler dbHandler = new DataBaseHandler(this, null, null, 1);
@@ -111,6 +117,17 @@ public class DataBaseScreen extends Activity implements View.OnClickListener {
         ArrayList<HashMap<String, String>> theList = dbHandler.displayMonth(Month, Year);
         ListViewCustomAdapter theAdapter = new ListViewCustomAdapter(this, theList);
         listView.setAdapter(theAdapter);
+
+        // Displays the total amount for that month in the totalDollars TextView
+        double total = 0.0;
+        for (int index=0; index < theList.size(); index++) {
+            HashMap tempMap = theList.get(index);
+            String tempDollarString = (String) tempMap.get(THIRD_COLUMN);
+            tempDollarString = tempDollarString.substring(1);
+            double temp = Double.parseDouble(tempDollarString);
+            total += temp;
+        }
+        totalDollarsTV.setText("Total: $" + (Double.toString(total)));
     }
 
 

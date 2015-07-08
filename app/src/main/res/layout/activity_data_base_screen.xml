@@ -58,6 +58,13 @@
         android:text="Submit"
         android:layout_gravity="center"/>
 
+    <TextView
+        android:id="@+id/totalTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total: "
+        android:textSize="20sp"/>
+
 
 
 
